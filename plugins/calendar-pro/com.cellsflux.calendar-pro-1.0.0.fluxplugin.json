@@ -1,0 +1,17 @@
+{
+  "id": "com.cellsflux.calendar-pro",
+  "name": "Calendar Pro",
+  "version": "1.0.0",
+  "description": "Un calendrier interactif React pour Fluxplugin, permettant de consulter les dates et d'ajouter des événements.",
+  "author": "Cellsflux",
+  "permissions": [
+    "commands",
+    "routes",
+    "menus",
+    "ui",
+    "styles",
+    "events"
+  ],
+  "file": "com.cellsflux.calendar-pro-1.0.0.tgz",
+  "sha256": "28e01010aa3188d9de344a9e99c9b541371af3faad1096bcdc966e6f78400015"
+}

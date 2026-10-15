@@ -1,0 +1,26 @@
+{
+  "name": "com.example.calendar-pro",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "fluxplugin dev",
+    "dev:host": "fluxplugin dev --host ../my-app   # run it inside your app while you work (edit the path)",
+    "build": "fluxplugin build",
+    "package": "fluxplugin package",
+    "validate": "fluxplugin validate",
+    "release": "fluxplugin publish"
+  },
+  "devDependencies": {
+    "@types/react": "^19.0.0",
+    "fluxplugin": "^1.0.0",
+    "react": "^19.0.0",
+    "typescript": "^5.6.0"
+  },
+  "dependencies": {
+    "@fullcalendar/core": "^6.1.21",
+    "@fullcalendar/daygrid": "^6.1.21",
+    "@fullcalendar/interaction": "^6.1.21",
+    "@fullcalendar/react": "^6.1.21"
+  }
+}
