@@ -1,69 +1,11 @@
 {
   "plugins": [
     {
-      "id": "com.example.stats",
-      "name": "Stats Service",
-      "version": "1.2.0",
-      "description": "Main + renderer plugin: validated IPC, preload API, pushed events and a typed config.",
-      "author": "fluxplugin examples",
-      "license": "MIT",
-      "permissions": [
-        "ipc",
-        "services",
-        "events",
-        "routes",
-        "menus",
-        "ui",
-        "commands",
-        "styles",
-        "storage"
-      ],
-      "icon": "plugins/backend-plugin/assets/icon.svg",
-      "readme": "plugins/backend-plugin/README.md",
-      "categories": ["Data", "Developer tools"],
-      "keywords": ["ipc", "main-process", "stats"],
-      "folder": "plugins/backend-plugin",
-      "files": [
-        "plugin.json",
-        "README.md",
-        "LICENSE",
-        "assets/icon.svg",
-        "dist/main.mjs",
-        "dist/renderer.js",
-        "dist/index.css"
-      ],
-      "hashes": {}
-    },
-    {
-      "id": "com.example.dashboard",
-      "name": "Dashboard Widgets",
-      "version": "1.0.0",
-      "description": "Renderer-only plugin: a lazy route, a dashboard widget, a toolbar action and scoped styles.",
-      "author": "fluxplugin examples",
-      "license": "MIT",
-      "permissions": ["routes", "menus", "ui", "commands", "styles"],
-      "icon": "plugins/dashboard-plugin/assets/icon.svg",
-      "readme": "plugins/dashboard-plugin/README.md",
-      "categories": ["Productivity", "UI"],
-      "keywords": ["dashboard", "widget", "toolbar"],
-      "folder": "plugins/dashboard-plugin",
-      "files": [
-        "plugin.json",
-        "README.md",
-        "LICENSE",
-        "assets/icon.svg",
-        "dist/renderer.js",
-        "dist/index.css"
-      ],
-      "hashes": {}
-    },
-    {
       "id": "com.example.students",
       "name": "Students Pro",
       "version": "0.9.0",
-      "description": "Advanced plugin with hooks, events, services, guards, layout, extension points and a dependency on Stats Service.",
+      "description": "Advanced: hooks, events, services, guards, layout, extension points, dependency on Stats.",
       "author": "fluxplugin examples",
-      "license": "MIT",
       "permissions": [
         "hooks",
         "events",
@@ -75,22 +17,316 @@
         "commands",
         "styles"
       ],
-      "icon": "plugins/advanced-plugin/assets/icon.svg",
-      "readme": "plugins/advanced-plugin/README.md",
-      "categories": ["Workflow"],
-      "keywords": ["hooks", "guards", "layout"],
-      "dependencies": { "com.example.stats": "^1.0.0" },
-      "folder": "plugins/advanced-plugin",
+      "folder": "plugins/advanced-plugin/",
       "files": [
-        "plugin.json",
         "README.md",
-        "LICENSE",
         "assets/icon.svg",
+        "dist/index.css",
         "dist/main.mjs",
         "dist/renderer.js",
-        "dist/index.css"
+        "plugin.json"
       ],
-      "hashes": {}
+      "hashes": {
+        "README.md": "d0971b0d756ce8f75d7683889979f0d8c47fe214f796f89ddc0999a5b5684842",
+        "assets/icon.svg": "9f4b4848f9441a8e6578d50783892e90cb3bf702b267aeecf4470531f31f84f8",
+        "dist/index.css": "d369971b71501e1e93b00cf4cd919f0f85db709b08c1b86d24f724082e0fd77a",
+        "dist/main.mjs": "e37d61b689d4501f98fe81e0b85e1e145426bdad18da4c0a29fec3f421a6ce31",
+        "dist/renderer.js": "2454581ece8d3c1bb8d5a213c1a38701ec3847e6b7f2d8924c07262a21ae0874",
+        "plugin.json": "7b7f1aa9df261a653b0721fddf1b6e2731ce6e403064a2195fc6c411e830f602"
+      },
+      "license": "MIT",
+      "icon": "plugins/advanced-plugin/assets/icon.svg",
+      "screenshots": [],
+      "video": "https://youtu.be/dQw4w9WgXcQ",
+      "categories": [
+        "Workflow"
+      ],
+      "keywords": [
+        "hooks",
+        "guards",
+        "layout"
+      ],
+      "links": {
+        "docs": "https://www.npmjs.com/package/fluxplugin"
+      },
+      "readme": "# Students Pro\n\nAdvanced: hooks, events, services, guards, layout, extension points, dependency on Stats.\n\n## What you get\n\n- **Hooks** on the host operation `item.create`: trims names and vetoes empty ones\n- A **route guard** and a **plugin layout**\n- A **PRO badge** in the title bar and a dashboard toolbar action\n- A dependency on *Stats Service* (activated first)\n\n## How to use it\n\n1. Open **Plugins** and make sure *Students Pro* is enabled.\n2. Look for its entries in the sidebar, the menu bar and the dashboard.\n3. Open the plugin's page in **Plugins → Details** to change its settings and read its logs.\n\n## Permissions\n\n| Permission | Why |\n| --- | --- |\n| `hooks` | intercepting host operations |\n| `events` | reacting to `item.created` |\n| `services` | reading the stats service |\n\n## Good to know\n\n> Plugins are shipped as built JavaScript only. Source code never leaves the author's machine.\n\nDocumentation: [fluxplugin on npm](https://www.npmjs.com/package/fluxplugin)\n"
+    },
+    {
+      "id": "com.fluxplugin.appearance",
+      "name": "Appearance",
+      "version": "1.0.0",
+      "description": "Themes, accent colors, fonts, text size, density and more — everything about how the app looks.",
+      "author": "fluxplugin",
+      "permissions": [
+        "ui"
+      ],
+      "folder": "plugins/appearance/",
+      "files": [
+        "README.md",
+        "assets/icon.svg",
+        "dist/renderer.js",
+        "plugin.json"
+      ],
+      "hashes": {
+        "README.md": "97db44bcd1be526d71d44702b98780b6f8919c37a23caec7ab249bca8f3eaade",
+        "assets/icon.svg": "4eaf06cbdc12cdb29c908491608cb4312da0fb8ba12b9a3cf0a947b2da81d42f",
+        "dist/renderer.js": "3c9c2aa17e9acb7c180a5dc9b18a851ab4436b162168a91b6bea598fd6566b3d",
+        "plugin.json": "d903e87d892ba5c31cbf558ed00598898e9aa4dc2d220d57a2d1413e75fce4e3"
+      },
+      "license": "MIT",
+      "icon": "plugins/appearance/assets/icon.svg",
+      "screenshots": [],
+      "categories": [
+        "Personalization"
+      ],
+      "keywords": [
+        "theme",
+        "font",
+        "accent",
+        "dark mode"
+      ],
+      "links": {},
+      "readme": "# Appearance\n\nMake the app yours. This plugin adds an **Appearance** page to *Settings* and four extra themes.\n\n## What you can change\n\n- **Mode** — System, Light or Dark.\n- **Theme** — Midnight, Sunset, Forest or high-contrast Graphite.\n- **Accent color** — seven colors, or the theme's own.\n- **Text** — font family, any font installed on your computer, size and line spacing.\n- **Layout** — compact or comfortable spacing, corner roundness, translucency and reduced motion.\n\n> [!TIP]\n> Type the name of any font installed on your computer in *Your own font*. If it is missing, the next font in the list is used.\n\n## How it works\n\n| Setting | Stored as |\n| --- | --- |\n| Theme and mode | the app's theme variables |\n| Fonts, size, spacing | CSS variables on the page |\n\nYour choices are saved on this device and apply to every plugin, because plugins use the same variables.\n\n## For developers\n\nPlugins can add their own **themes** and **fonts** to the same lists — see the `theme` and `font` extension points in the documentation.\n"
+    },
+    {
+      "id": "com.example.stats",
+      "name": "Stats Service",
+      "version": "1.2.0",
+      "description": "Main + renderer plugin: validated IPC, preload API, pushed events and a typed config.",
+      "author": "fluxplugin examples",
+      "permissions": [
+        "ipc",
+        "services",
+        "events",
+        "routes",
+        "menus",
+        "ui",
+        "commands",
+        "styles",
+        "storage"
+      ],
+      "folder": "plugins/backend-plugin/",
+      "files": [
+        "README.md",
+        "assets/icon.svg",
+        "dist/index.css",
+        "dist/main.mjs",
+        "dist/renderer.js",
+        "plugin.json"
+      ],
+      "hashes": {
+        "README.md": "04710d684b7fe1ba95435cc328b7571f19a7babce257a24d576e97553cd6cb51",
+        "assets/icon.svg": "88ed776c9cd22ba92390ba3d5d31196dab6c2de34ea1d137e502e5adf6a5da4b",
+        "dist/index.css": "0bd1a5be2959ad6ccfd387e093c6a6e43f389d233b43933709e5612a811fef65",
+        "dist/main.mjs": "3fe5206f392afdc8526982bc7b3a44732cd5175fbd75033b79ce58d29b31fe13",
+        "dist/renderer.js": "829c93eda42ba1b0967f50e96ce92fbbca83005087a0ced79aa4c497ac562d36",
+        "plugin.json": "f746c804e5a72991a853d1f81ed758179b5e481d17e3f35e6cf4c09b6b7513ce"
+      },
+      "license": "MIT",
+      "icon": "plugins/backend-plugin/assets/icon.svg",
+      "screenshots": [],
+      "categories": [
+        "Data",
+        "Developer tools"
+      ],
+      "keywords": [
+        "ipc",
+        "main-process",
+        "stats"
+      ],
+      "links": {
+        "docs": "https://www.npmjs.com/package/fluxplugin"
+      },
+      "readme": "# Stats Service\n\nMain + renderer plugin: validated IPC, preload API, pushed events and a typed config.\n\n## What you get\n\n- A **main-process** service answering validated IPC calls (`stats.get`, `stats.addStudent`)\n- A **preload API** exposed as `window.plugins.stats`\n- A live **push** (`stats.updated`) every few seconds, with a configurable interval\n- A typed, persisted **configuration** (see *Settings*)\n\n## How to use it\n\n1. Open **Plugins** and make sure *Stats Service* is enabled.\n2. Look for its entries in the sidebar, the menu bar and the dashboard.\n3. Open the plugin's page in **Plugins → Details** to change its settings and read its logs.\n\n## Permissions\n\n| Permission | Why |\n| --- | --- |\n| `ipc` | handlers and push events |\n| `services` | the `stats.service` other plugins can use |\n| `storage` | persisting its settings |\n\n## Good to know\n\n> Plugins are shipped as built JavaScript only. Source code never leaves the author's machine.\n\nDocumentation: [fluxplugin on npm](https://www.npmjs.com/package/fluxplugin)\n"
+    },
+    {
+      "id": "com.cellsflux.calendar-pro",
+      "name": "Calendar Pro",
+      "version": "1.0.0",
+      "description": "Un calendrier interactif React pour Fluxplugin, permettant de consulter les dates et d'ajouter des événements.",
+      "author": "Cellsflux",
+      "permissions": [
+        "commands",
+        "routes",
+        "menus",
+        "ui",
+        "styles",
+        "events"
+      ],
+      "folder": "plugins/calendar-pro/",
+      "files": [
+        "README.md",
+        "assets/icon.svg",
+        "dist/index.css",
+        "dist/main.mjs",
+        "dist/renderer.css",
+        "dist/renderer.js",
+        "plugin.json"
+      ],
+      "hashes": {
+        "README.md": "20b8d82bce087f060aaed60a46481117701a4892e9648236aa54e3a0681a4e32",
+        "assets/icon.svg": "8cb7d2cfd4787c3163601634a1a3555104c1afc37065067a4e81f25f76abe5ef",
+        "dist/index.css": "f5ac94f9b2f4723b4c5b471f5fd698c1bfa9428aad1e660985459c06b4b447c9",
+        "dist/main.mjs": "f9dc208cc192e6c9185e6572de9cb5820da581be6519803123cbf3f5dd68c9c1",
+        "dist/renderer.css": "f5ac94f9b2f4723b4c5b471f5fd698c1bfa9428aad1e660985459c06b4b447c9",
+        "dist/renderer.js": "9abf2cb48d3d0202ae517d978b97d9e7dbcd08dcc57dcb334e3470f8cfd8099d",
+        "plugin.json": "940add0d095f9e1cee7981dd25b231e7d8c5bce13e7825a8b9ae925b19eeb16d"
+      },
+      "license": "MIT",
+      "icon": "plugins/calendar-pro/assets/icon.svg",
+      "screenshots": [],
+      "categories": [
+        "Productivity"
+      ],
+      "keywords": [
+        "calendar",
+        "react",
+        "events",
+        "fullcalendar",
+        "demo"
+      ],
+      "links": {},
+      "readme": "# Calendar Pro\n\nOne or two sentences that say what this plugin does and who it is for.\n\n## What you get\n\n- A **page** at `/calendar_pro` in the sidebar\n- A **widget** on the dashboard\n- A **command** you can run from the command palette (Ctrl/Cmd+K)\n\n## How to use it\n\n1. Enable the plugin in **Plugins**.\n2. Open **Calendar Pro** in the sidebar.\n3. Configure it in the plugin's *Settings* section.\n\n## Permissions\n\n| Permission | Why |\n| --- | --- |\n| `routes`, `menus` | adds its page and sidebar entry |\n| `ui` | adds a dashboard widget |\n| `commands` | registers its commands |\n\n## Video & screenshots\n\nAdd them in `plugin.json` and they appear on this page:\n\n```json\n\"video\": \"https://www.youtube.com/watch?v=YOUR_VIDEO_ID\",\n\"banner\": \"./assets/banner.png\",\n\"screenshots\": [\"./assets/shot-1.png\", \"./assets/shot-2.png\"],\n\"links\": { \"docs\": \"https://example.com/docs\", \"support\": \"https://example.com/support\" }\n```\n\n## Changelog\n\n- **1.0.0** — first release\n"
+    },
+    {
+      "id": "com.example.dashboard",
+      "name": "Dashboard Widgets",
+      "version": "1.0.0",
+      "description": "Renderer-only plugin: a lazy route, a dashboard widget, a toolbar action and scoped styles.",
+      "author": "fluxplugin examples",
+      "permissions": [
+        "routes",
+        "menus",
+        "ui",
+        "commands",
+        "styles"
+      ],
+      "folder": "plugins/dashboard-plugin/",
+      "files": [
+        "README.md",
+        "assets/1.avif",
+        "assets/2.webp",
+        "assets/3.webp",
+        "assets/icon.png",
+        "assets/icon.svg",
+        "dist/index.css",
+        "dist/renderer.js",
+        "plugin.json"
+      ],
+      "hashes": {
+        "README.md": "7d06d059983a469a554fc9ad63a3c034f27e820ab981c678465f1b7006edb7d5",
+        "assets/1.avif": "2a342eda5a9dc5bc425767cacc30c3c7d446c945bed1553197cbe29857e6797f",
+        "assets/2.webp": "d6b79ca43bbb3ab3e43b8ac847d3decc2486b4a6b5df820683f013f61a13352a",
+        "assets/3.webp": "6c8b76b0be5a948ffb0e50a62cb2791823c43dd6a44f5d42c7b47bf62f3ab01d",
+        "assets/icon.png": "61cd64a603c866c5d08972c2f38c8f40f426f56b6d1aef482233adafd460343c",
+        "assets/icon.svg": "59f94b26d071e44ed0805e2a13f257cee7f5714e24d7787a2dc907a13062ca3f",
+        "dist/index.css": "b97136c272f8a03bb6c8e39b43f102ff6506cd07054b782ab3103603e31f043e",
+        "dist/renderer.js": "e3b4a3b864b16405abb0f4bac73103f7c95bd10201b7a23537a58414f6daab23",
+        "plugin.json": "7083e4d2894575d86da0f25e59750b4f23346829a93f542ee848469032f250b1"
+      },
+      "license": "MIT",
+      "icon": "plugins/dashboard-plugin/assets/icon.png",
+      "screenshots": [
+        "plugins/dashboard-plugin/assets/1.avif",
+        "plugins/dashboard-plugin/assets/2.webp",
+        "plugins/dashboard-plugin/assets/3.webp"
+      ],
+      "video": "https://www.w3schools.com/html/mov_bbb.mp4",
+      "categories": [
+        "Productivity",
+        "UI"
+      ],
+      "keywords": [
+        "dashboard",
+        "widget",
+        "toolbar"
+      ],
+      "links": {
+        "docs": "https://www.npmjs.com/package/fluxplugin"
+      },
+      "readme": "# Dashboard Widgets\n\nRenderer-only plugin: a lazy route, a dashboard widget, a toolbar action and scoped styles.\n\n## What you get\n\n- A **widget** on the dashboard (slot `dashboard.after`)\n- A lazy-loaded **Analytics** page with a sidebar entry\n- A **toolbar action** contributed to the host's `dashboard` extension point\n- A command with the shortcut `Mod+Shift+R`\n\n## How to use it\n\n1. Open **Plugins** and make sure *Dashboard Widgets* is enabled.\n2. Look for its entries in the sidebar, the menu bar and the dashboard.\n3. Open the plugin's page in **Plugins → Details** to change its settings and read its logs.\n\n## Permissions\n\n| Permission | Why |\n| --- | --- |\n| `routes, menus` | its page and sidebar entry |\n| `ui` | widget + toolbar contribution |\n| `commands` | the refresh command |\n| `styles` | its own CSS, removed when disabled |\n\n## Good to know\n\n> Plugins are shipped as built JavaScript only. Source code never leaves the author's machine.\n\nDocumentation: [fluxplugin on npm](https://www.npmjs.com/package/fluxplugin)\n"
+    },
+    {
+      "id": "com.example.hello",
+      "name": "Hello",
+      "version": "1.0.0",
+      "description": "Hello plugin",
+      "author": "Your name",
+      "permissions": [
+        "commands",
+        "routes",
+        "menus",
+        "ui",
+        "styles",
+        "notifications"
+      ],
+      "folder": "plugins/hello/",
+      "files": [
+        "README.md",
+        "assets/icon.svg",
+        "dist/index.css",
+        "dist/main.mjs",
+        "dist/renderer.js",
+        "plugin.json"
+      ],
+      "hashes": {
+        "README.md": "dfde2ab5f9bfe61460cbdf2b523e6d47555401fdac0501ff070a43afcde35d54",
+        "assets/icon.svg": "c37108bb139420749efccc9c03c23493e2d59f0cca14c59e8e689f99d78eed44",
+        "dist/index.css": "ee8110a67ac345cf2e70825fe363a95934b667f8019d45129d0fa4d5cf65a952",
+        "dist/main.mjs": "1b85d64ad8c5c38b318fae32065bbb04acb195aa908f085bd77f572c6a6a1005",
+        "dist/renderer.js": "fbfaf60de0385ebafd91667896377997ac395a71982b6d2c074b786801742fa4",
+        "plugin.json": "d113536774b8c630ba4ba4932df55f78929359b34f7f0a601e01847ffe81bc31"
+      },
+      "license": "MIT",
+      "icon": "plugins/hello/assets/icon.svg",
+      "screenshots": [],
+      "categories": [
+        "Productivity"
+      ],
+      "keywords": [
+        "${v.slug}"
+      ],
+      "links": {},
+      "readme": "# Hello\n\nOne or two sentences that say what this plugin does and who it is for.\n\n## What you get\n\n- A **page** at `/hello` in the sidebar\n- A **widget** on the dashboard\n- A **command** you can run from the command palette (Ctrl/Cmd+K)\n\n## How to use it\n\n1. Enable the plugin in **Plugins**.\n2. Open **Hello** in the sidebar.\n3. Configure it in the plugin's *Settings* section.\n\n## Permissions\n\n| Permission | Why |\n| --- | --- |\n| `routes`, `menus` | adds its page and sidebar entry |\n| `ui` | adds a dashboard widget |\n| `commands` | registers its commands |\n\n## Video & screenshots\n\nAdd them in `plugin.json` and they appear on this page:\n\n```json\n\"video\": \"https://www.youtube.com/watch?v=YOUR_VIDEO_ID\",\n\"banner\": \"./assets/banner.png\",\n\"screenshots\": [\"./assets/shot-1.png\", \"./assets/shot-2.png\"],\n\"links\": { \"docs\": \"https://example.com/docs\", \"support\": \"https://example.com/support\" }\n```\n\n## Changelog\n\n- **1.0.0** — first release\n"
+    },
+    {
+      "id": "com.fluxplugin.language",
+      "name": "Language",
+      "version": "1.0.0",
+      "description": "Use the app in English, French, Spanish or German — and add your own language.",
+      "author": "fluxplugin",
+      "permissions": [
+        "ui"
+      ],
+      "folder": "plugins/language/",
+      "files": [
+        "README.md",
+        "assets/icon.svg",
+        "dist/renderer.js",
+        "plugin.json"
+      ],
+      "hashes": {
+        "README.md": "d9a91542d243931a4bc50c95cddc8a5a8990eded316612909289e509edafa827",
+        "assets/icon.svg": "785e19bb6ef6a1bfad93aab3713bf79a9c45de902d53680e7831abd8a952db81",
+        "dist/renderer.js": "ce798780a86163f6ba6e9ded8065500e3ddd43e0255de69be6ace16daa232a84",
+        "plugin.json": "20f640601a457e16ace399c21b5a70164b323b81d3a957e18c6b177ac1f30a10"
+      },
+      "license": "MIT",
+      "icon": "plugins/language/assets/icon.svg",
+      "screenshots": [],
+      "categories": [
+        "Personalization"
+      ],
+      "keywords": [
+        "language",
+        "translation",
+        "i18n",
+        "français",
+        "español",
+        "deutsch"
+      ],
+      "links": {},
+      "readme": "# Language\n\nChoose the language of the whole interface: menus, search, notifications, settings and the plugin manager.\n\n## Languages included\n\n| Language | Code |\n| --- | --- |\n| English | `en` |\n| Français | `fr` |\n| Español | `es` |\n| Deutsch | `de` |\n\nOpen **Settings → Language** and pick one. The change is instant and remembered.\n\n## Add your own language\n\n1. Copy `src/messages.ts` and translate the values.\n2. Add the language to the list in `src/renderer.tsx`.\n3. Build with `fluxplugin build`.\n\n> [!NOTE]\n> Any plugin can ship translations — the app merges them. Missing words fall back to English, so a partial translation is fine.\n\n## Right-to-left languages\n\nSet `rtl: true` on a language (Arabic, Hebrew…) and the whole interface mirrors automatically.\n"
     }
   ]
 }
