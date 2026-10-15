@@ -786,31 +786,39 @@ function Editor() {
     setFile(editedFile);
     setPreview(URL.createObjectURL(editedFile));
     setShowModal(false);
+    const url = URL.createObjectURL(editedFile);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = `photo-editee-${Date.now()}.${editedFile.type.split("/")[1] || "png"}`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
   };
-  return /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)("div", { className: "min-h-screen bg-slate-50 px-4 py-10 text-slate-900 sm:px-6 lg:px-8", children: [
+  return /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)("div", { className: "min-h-screen bg-gradient-to-br from-rose-50 via-amber-50 to-violet-50 px-4 py-10 text-slate-800 transition-colors duration-500 dark:from-slate-950 dark:via-slate-900 dark:to-indigo-950 dark:text-slate-100 sm:px-6 lg:px-8", children: [
     /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)("div", { className: "mx-auto max-w-5xl", children: [
       /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)("header", { className: "mb-10 flex items-center gap-4", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("div", { className: "flex h-14 w-14 items-center justify-center rounded-2xl bg-violet-600 text-2xl text-white shadow-lg shadow-violet-200", children: "\u2726" }),
+        /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("div", { className: "flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-violet-500 to-fuchsia-500 text-2xl text-white shadow-lg shadow-violet-300/50 dark:shadow-violet-900/50", children: "\u2726" }),
         /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)("div", { children: [
           /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("h1", { className: "text-2xl font-bold tracking-tight sm:text-3xl", children: "Photo Studio" }),
-          /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("p", { className: "mt-1 text-sm text-slate-500", children: "Importez, retouchez et sublimez vos photos." })
+          /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("p", { className: "mt-1 text-sm text-slate-500 dark:text-slate-400", children: "Importez, retouchez et sublimez vos photos. \u2728" })
         ] })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("div", { className: "overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-xl shadow-slate-200/50", children: /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)("div", { className: "grid md:grid-cols-2", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("div", { className: "overflow-hidden rounded-[2rem] border border-white/60 bg-white/80 shadow-2xl shadow-violet-200/40 backdrop-blur-xl transition-colors duration-500 dark:border-white/10 dark:bg-slate-900/70 dark:shadow-black/40", children: /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)("div", { className: "grid md:grid-cols-2", children: [
         /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)("div", { className: "flex flex-col justify-center p-6 sm:p-10", children: [
-          /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("span", { className: "mb-3 text-xs font-bold uppercase tracking-[0.2em] text-violet-600", children: "Votre espace cr\xE9atif" }),
-          /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("h2", { className: "text-2xl font-bold sm:text-3xl", children: "Donnez vie \xE0 vos images." }),
-          /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("p", { className: "mt-3 max-w-md text-sm leading-6 text-slate-500", children: "Choisissez une photo depuis votre appareil et utilisez notre \xE9diteur pour lui apporter votre touche personnelle." }),
+          /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("span", { className: "mb-3 inline-block w-fit rounded-full bg-violet-100 px-3 py-1 text-xs font-bold uppercase tracking-[0.2em] text-violet-700 dark:bg-violet-500/20 dark:text-violet-300", children: "Votre espace cr\xE9atif" }),
+          /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("h2", { className: "text-2xl font-bold sm:text-3xl", children: "Donnez vie \xE0 vos images. \u{1F3A8}" }),
+          /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("p", { className: "mt-3 max-w-md text-sm leading-6 text-slate-500 dark:text-slate-400", children: "Choisissez une photo depuis votre appareil et utilisez notre \xE9diteur pour lui apporter votre touche personnelle." }),
           /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)(
             "button",
             {
               type: "button",
               onClick: () => inputRef.current?.click(),
-              className: "mt-8 flex min-h-40 w-full flex-col items-center justify-center rounded-2xl border-2 border-dashed border-violet-200 bg-violet-50/60 px-5 py-7 transition hover:border-violet-400 hover:bg-violet-50 focus:outline-none focus:ring-4 focus:ring-violet-100",
+              className: "group mt-8 flex min-h-40 w-full flex-col items-center justify-center rounded-2xl border-2 border-dashed border-violet-200 bg-violet-50/60 px-5 py-7 transition-all duration-300 hover:-translate-y-0.5 hover:border-violet-400 hover:bg-violet-100/70 hover:shadow-lg hover:shadow-violet-200/50 focus:outline-none focus:ring-4 focus:ring-violet-100 dark:border-violet-500/30 dark:bg-violet-500/10 dark:hover:border-violet-400 dark:hover:bg-violet-500/20 dark:focus:ring-violet-500/20",
               children: [
-                /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("span", { className: "mb-3 flex h-12 w-12 items-center justify-center rounded-xl bg-white text-2xl shadow-sm", children: "\uFF0B" }),
-                /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("span", { className: "font-semibold text-slate-800", children: "Cliquez pour importer une photo" }),
-                /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("span", { className: "mt-2 text-xs text-slate-500", children: "PNG, JPG, JPEG ou WEBP" })
+                /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("span", { className: "mb-3 flex h-12 w-12 items-center justify-center rounded-xl bg-white text-2xl shadow-sm transition-transform duration-300 group-hover:scale-110 group-hover:rotate-6 dark:bg-slate-800", children: "\uFF0B" }),
+                /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("span", { className: "font-semibold text-slate-800 dark:text-slate-100", children: "Cliquez pour importer une photo" }),
+                /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("span", { className: "mt-2 text-xs text-slate-500 dark:text-slate-400", children: "PNG, JPG, JPEG ou WEBP" })
               ]
             }
           ),
@@ -824,11 +832,11 @@ function Editor() {
               className: "hidden"
             }
           ),
-          file && /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)("div", { className: "mt-5 flex items-center gap-3 rounded-xl border border-slate-200 p-3", children: [
-            /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("div", { className: "flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-emerald-50 text-emerald-600", children: "\u2713" }),
+          file && /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)("div", { className: "mt-5 flex items-center gap-3 rounded-2xl border border-slate-200/70 bg-white/70 p-3 shadow-sm backdrop-blur transition-colors duration-500 dark:border-slate-700 dark:bg-slate-800/60", children: [
+            /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("div", { className: "flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-emerald-100 text-emerald-600 dark:bg-emerald-500/20 dark:text-emerald-300", children: "\u2713" }),
             /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)("div", { className: "min-w-0 flex-1", children: [
               /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("p", { className: "truncate text-sm font-semibold", children: file.name }),
-              /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)("p", { className: "text-xs text-slate-500", children: [
+              /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)("p", { className: "text-xs text-slate-500 dark:text-slate-400", children: [
                 (file.size / 1024 / 1024).toFixed(2),
                 " Mo"
               ] })
@@ -838,7 +846,7 @@ function Editor() {
               {
                 type: "button",
                 onClick: () => inputRef.current?.click(),
-                className: "rounded-lg px-3 py-2 text-sm font-medium text-violet-700 transition hover:bg-violet-50",
+                className: "rounded-lg px-3 py-2 text-sm font-medium text-violet-700 transition hover:bg-violet-50 dark:text-violet-300 dark:hover:bg-violet-500/20",
                 children: "Changer"
               }
             )
@@ -849,7 +857,7 @@ function Editor() {
               type: "button",
               disabled: !file,
               onClick: () => setShowModal(true),
-              className: "mt-5 flex w-full items-center justify-center gap-2 rounded-xl bg-violet-600 px-5 py-3.5 font-semibold text-white shadow-lg shadow-violet-200 transition hover:bg-violet-700 focus:outline-none focus:ring-4 focus:ring-violet-200 disabled:cursor-not-allowed disabled:bg-slate-300 disabled:shadow-none",
+              className: "mt-5 flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-violet-600 to-fuchsia-600 px-5 py-3.5 font-semibold text-white shadow-lg shadow-violet-300/50 transition-all duration-300 hover:-translate-y-0.5 hover:from-violet-700 hover:to-fuchsia-700 hover:shadow-xl focus:outline-none focus:ring-4 focus:ring-violet-200 disabled:cursor-not-allowed disabled:from-slate-300 disabled:to-slate-300 disabled:shadow-none disabled:hover:translate-y-0 dark:shadow-violet-900/40 dark:focus:ring-violet-500/30 dark:disabled:from-slate-700 dark:disabled:to-slate-700",
               children: [
                 /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("span", { children: "\u2727" }),
                 "Modifier la photo",
@@ -857,12 +865,12 @@ function Editor() {
               ]
             }
           ),
-          /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("p", { className: "mt-4 text-center text-xs text-slate-400", children: "Votre cr\xE9ativit\xE9, sans limites." })
+          /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("p", { className: "mt-4 text-center text-xs text-slate-400 dark:text-slate-500", children: "Votre cr\xE9ativit\xE9, sans limites. \u{1F4AB}" })
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)("div", { className: "relative flex min-h-80 items-center justify-center overflow-hidden bg-slate-100 p-6 sm:p-10", children: [
-          /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("div", { className: "absolute inset-0 opacity-40 [background-image:radial-gradient(#cbd5e1_1px,transparent_1px)] [background-size:18px_18px]" }),
+        /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)("div", { className: "relative flex min-h-80 items-center justify-center overflow-hidden bg-gradient-to-br from-slate-100 to-slate-200 p-6 transition-colors duration-500 dark:from-slate-800 dark:to-slate-900 sm:p-10", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("div", { className: "absolute inset-0 opacity-40 [background-image:radial-gradient(#cbd5e1_1px,transparent_1px)] [background-size:18px_18px] dark:[background-image:radial-gradient(#475569_1px,transparent_1px)]" }),
           preview ? /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)("div", { className: "relative w-full", children: [
-            /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("div", { className: "absolute -inset-2 rounded-2xl bg-white/70 shadow-xl" }),
+            /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("div", { className: "absolute -inset-2 rounded-2xl bg-white/70 shadow-xl dark:bg-slate-800/70" }),
             /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(
               "img",
               {
@@ -872,17 +880,17 @@ function Editor() {
               }
             ),
             /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)("div", { className: "relative mt-4 flex items-center justify-between", children: [
-              /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("span", { className: "rounded-full bg-white px-3 py-1.5 text-xs font-medium text-slate-600 shadow-sm", children: "Aper\xE7u de votre image" }),
-              /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("span", { className: "text-xs text-slate-500", children: file?.type.split("/")[1]?.toUpperCase() })
+              /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("span", { className: "rounded-full bg-white px-3 py-1.5 text-xs font-medium text-slate-600 shadow-sm dark:bg-slate-800 dark:text-slate-300", children: "Aper\xE7u de votre image" }),
+              /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("span", { className: "text-xs text-slate-500 dark:text-slate-400", children: file?.type.split("/")[1]?.toUpperCase() })
             ] })
           ] }) : /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)("div", { className: "relative flex max-w-xs flex-col items-center text-center", children: [
-            /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("div", { className: "mb-5 flex h-24 w-24 items-center justify-center rounded-3xl border border-white bg-white/80 text-5xl shadow-lg shadow-slate-200/70", children: "\u{1F5BC}\uFE0F" }),
-            /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("h3", { className: "text-lg font-semibold text-slate-700", children: "Votre photo appara\xEEtra ici" }),
-            /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("p", { className: "mt-2 text-sm leading-6 text-slate-500", children: "Importez une image pour commencer votre exp\xE9rience d'\xE9dition." })
+            /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("div", { className: "mb-5 flex h-24 w-24 items-center justify-center rounded-3xl border border-white bg-white/80 text-5xl shadow-lg shadow-slate-200/70 dark:border-slate-700 dark:bg-slate-800/80 dark:shadow-black/30", children: "\u{1F5BC}\uFE0F" }),
+            /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("h3", { className: "text-lg font-semibold text-slate-700 dark:text-slate-200", children: "Votre photo appara\xEEtra ici" }),
+            /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("p", { className: "mt-2 text-sm leading-6 text-slate-500 dark:text-slate-400", children: "Importez une image pour commencer votre exp\xE9rience d'\xE9dition." })
           ] })
         ] })
       ] }) }),
-      /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)("div", { className: "mt-6 flex flex-col justify-between gap-3 text-xs text-slate-400 sm:flex-row sm:items-center", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)("div", { className: "mt-6 flex flex-col justify-between gap-3 text-xs text-slate-400 dark:text-slate-500 sm:flex-row sm:items-center", children: [
         /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("p", { children: "Photo Studio \xB7 \xC9diteur d'images" }),
         /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("p", { children: "Interface simple, \xE9l\xE9gante et responsive." })
       ] })

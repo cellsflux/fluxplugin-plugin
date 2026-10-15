@@ -310,8 +310,8 @@
         "dist/index.css": "65c952bfac71607dbb7bd138c4f6b88ec38a4399c1f3f0d14f9b02900da2606d",
         "dist/main.mjs": "f17d90498bcacad8a9f456027fe41ed47c4d929db9f2b3eb71c2b8027b5d83d8",
         "dist/renderer.css": "e829262c212fd58d5cd70629ba9b67060e6fc0d5d30ce69484a0f69df7217f66",
-        "dist/renderer.js": "1b7d58fe29893c56137d63d8b75054f96a10cb66f3cc4fd712fb99bc4e61d9e2",
-        "dist/tailwind.css": "41eba9b55cf6a8a227b38e7e8e90d9c354ac468636f91359db4d1be2c13125df",
+        "dist/renderer.js": "2ff7de8111962da72d35545c2e950bde6adab43e8234d328360fa2672aa17a6a",
+        "dist/tailwind.css": "32ac317a6fcc0e91c4dd1b21d149fc0f2b3a039264411bc891cee38e23aee23f",
         "plugin.json": "fd8fdef6618a6d51ba73d7e1aee762c7abfe15b59c1da5ac38ea2d8879ca3487"
       },
       "license": "MIT",
