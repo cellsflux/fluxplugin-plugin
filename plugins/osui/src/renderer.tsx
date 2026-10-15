@@ -2,6 +2,7 @@ import { definePlugin } from "fluxplugin";
 import { usePluginState } from "fluxplugin/react";
 import moment from "moment";
 import { Editor } from "./components/editor";
+import { Camera } from "lucide-react";
 
 function OsuiWidget() {
   const [n, setN] = usePluginState("com.example.osui", "clicks", 0);
@@ -33,7 +34,12 @@ export default definePlugin({
     {
       path: "/osui",
       lazy: async () => ({ default: OsuiPage }),
-      meta: { title: "Osui", breadcrumb: "Osui", menu: { label: "Osui" } },
+      meta: {
+        title: "Osui",
+        breadcrumb: "Osui",
+        menu: { label: "Osui" },
+        icon: <Camera />,
+      },
     },
   ],
   components: [
