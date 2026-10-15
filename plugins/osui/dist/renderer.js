@@ -71,859 +71,307 @@ var import_react3 = __toESM(require_react(), 1);
 // src/components/editor.tsx
 var import_react2 = __toESM(require_react2(), 1);
 
-// node_modules/.pnpm/react-photo-editor@3.0.0_re_e04e42f6f3de2bb3083a8b7c3d3ec15a/node_modules/react-photo-editor/dist/react-photo-editor.es.js
-var import_jsx_runtime = __toESM(require_jsx_runtime(), 1);
+// node_modules/.pnpm/@unlayer+react-image-editor@1.0.2_react@19.3.1/node_modules/@unlayer/react-image-editor/dist/index.mjs
 var import_react = __toESM(require_react2(), 1);
-var be = ({
-  file: c,
-  defaultBrightness: T = 100,
-  defaultContrast: f = 100,
-  defaultSaturate: G = 100,
-  defaultGrayscale: J = 0,
-  defaultFlipHorizontal: q = false,
-  defaultFlipVertical: A = false,
-  defaultZoom: K = 1,
-  defaultRotate: D = 0,
-  defaultLineColor: y = "#000000",
-  defaultLineWidth: Q = 2,
-  defaultMode: pe = "pan"
-}) => {
-  const p = (0, import_react.useRef)(null), w = (0, import_react.useRef)(new Image()), [L, he] = (0, import_react.useState)(""), [o, _] = (0, import_react.useState)(T), [S, ee] = (0, import_react.useState)(f), [V, re] = (0, import_react.useState)(G), [Y, te] = (0, import_react.useState)(J), [I, ae] = (0, import_react.useState)(D), [x, ne] = (0, import_react.useState)(q), [b, oe] = (0, import_react.useState)(A), [u, z] = (0, import_react.useState)(K), [M, v] = (0, import_react.useState)(false), [P, B] = (0, import_react.useState)(null), [k, H] = (0, import_react.useState)(0), [N, X] = (0, import_react.useState)(0), [W, ie] = (0, import_react.useState)(pe), [U, O] = (0, import_react.useState)(null), [E, j] = (0, import_react.useState)(y), [$, se] = (0, import_react.useState)(Q), m = (0, import_react.useRef)([]);
-  (0, import_react.useEffect)(() => {
-    if (c) {
-      const e = URL.createObjectURL(c);
-      return he(e), () => {
-        URL.revokeObjectURL(e);
-      };
-    }
-  }, [c]), (0, import_react.useEffect)(() => {
-    R();
-  }, [
-    c,
-    L,
-    I,
-    x,
-    b,
-    u,
-    o,
-    S,
-    V,
-    Y,
-    k,
-    N
-  ]);
-  const me = (e) => {
-    m.current.forEach(({ path: r, color: n, width: l }) => {
-      e.beginPath(), e.strokeStyle = n, e.lineWidth = l, e.lineCap = "round", e.lineJoin = "round", r.forEach((d, h) => {
-        h === 0 ? e.moveTo(d.x, d.y) : e.lineTo(d.x, d.y);
-      }), e.stroke();
-    });
-  }, R = () => {
-    if (!L) return;
-    const e = p.current, r = e == null ? void 0 : e.getContext("2d"), n = w.current;
-    w.current.src = L, w.current.onload = R, n.onload = () => {
-      if (e && r) {
-        const l = n.width * u, d = n.height * u, h = (n.width - l) / 2, g = (n.height - d) / 2;
-        if (e.width = n.width, e.height = n.height, r.clearRect(0, 0, e.width, e.height), r.filter = C(), r.save(), I) {
-          const F = e.width / 2, de = e.height / 2;
-          r.translate(F, de), r.rotate(I * Math.PI / 180), r.translate(-F, -de);
-        }
-        x && (r.translate(e.width, 0), r.scale(-1, 1)), b && (r.translate(0, e.height), r.scale(1, -1)), r.translate(h + k, g + N), r.scale(u, u), r.drawImage(n, 0, 0, e.width, e.height), r.restore(), r.filter = "none", me(r);
-      }
+var defaultScriptUrl = "https://cdn.unlayer.com/image-editor/embed.js";
+var REUSED_TAG_TIMEOUT_MS = 3e4;
+var loads = /* @__PURE__ */ new Map();
+var resolveUrl = (scriptUrl) => new URL(scriptUrl, document.baseURI).href;
+var findScriptTag = (scriptUrl) => {
+  var _a;
+  const resolved = resolveUrl(scriptUrl);
+  const scripts = Array.from(document.querySelectorAll("script"));
+  return (_a = scripts.find((script) => script.src === resolved)) != null ? _a : null;
+};
+var loadScript = (scriptUrl = defaultScriptUrl) => {
+  if (window.ImageEditor) {
+    return Promise.resolve();
+  }
+  const cached = loads.get(scriptUrl);
+  if (cached) {
+    return cached.promise;
+  }
+  let abort;
+  const promise = new Promise((resolve, reject) => {
+    const existing = findScriptTag(scriptUrl);
+    const tag = existing != null ? existing : document.createElement("script");
+    let timeout;
+    const failWith = (error) => {
+      if (timeout !== void 0) clearTimeout(timeout);
+      loads.delete(scriptUrl);
+      tag.remove();
+      reject(error);
     };
-  }, ue = () => new Promise((e) => {
-    const r = p.current;
-    if (!r || !c) {
-      e(null);
-      return;
+    abort = failWith;
+    tag.addEventListener(
+      "load",
+      () => {
+        var _a;
+        if (timeout !== void 0) clearTimeout(timeout);
+        (_a = window.ImageEditor) == null ? void 0 : _a.load().catch(() => {
+        });
+        resolve();
+      },
+      { once: true }
+    );
+    tag.addEventListener(
+      "error",
+      () => {
+        failWith(
+          new Error(
+            `Failed to load the image editor embed script: ${scriptUrl}`
+          )
+        );
+      },
+      { once: true }
+    );
+    if (existing) {
+      timeout = setTimeout(() => {
+        failWith(
+          new Error(
+            `Timed out waiting for an existing embed script tag: ${scriptUrl}`
+          )
+        );
+      }, REUSED_TAG_TIMEOUT_MS);
+    } else {
+      tag.src = scriptUrl;
+      document.head.appendChild(tag);
     }
-    const n = (c.name.split(".").pop() || "").toLowerCase();
-    let l;
-    switch (n) {
-      case "jpg":
-      case "jpeg":
-        l = "image/jpeg";
-        break;
-      case "png":
-        l = "image/png";
-        break;
-      default:
-        l = "image/png";
-    }
-    r.toBlob((d) => {
-      if (d) {
-        const h = new File([d], c.name, { type: d.type });
-        e(h);
-      } else
-        e(null);
-    }, l);
-  }), a = () => {
-    const e = p.current;
-    if (e && c) {
-      const r = document.createElement("a");
-      r.download = c.name, r.href = e.toDataURL(c == null ? void 0 : c.type), r.click();
-    }
-  }, C = () => `brightness(${o}%) contrast(${S}%) grayscale(${Y}%) saturate(${V}%)`, le = () => {
-    z((e) => e + 0.1);
-  }, ce = () => {
-    z((e) => Math.max(e - 0.1, 0.1));
-  };
-  return {
-    /** Reference to the canvas element. */
-    canvasRef: p,
-    /** Source URL of the image being edited. */
-    imageSrc: L,
-    /** Current brightness level. */
-    brightness: o,
-    /** Current contrast level. */
-    contrast: S,
-    /** Current saturation level. */
-    saturate: V,
-    /** Current grayscale level. */
-    grayscale: Y,
-    /** Current rotation angle in degrees. */
-    rotate: I,
-    /** Flag indicating if the image is flipped horizontally. */
-    flipHorizontal: x,
-    /** Flag indicating if the image is flipped vertically. */
-    flipVertical: b,
-    /** Current zoom level. */
-    zoom: u,
-    /** Flag indicating if the image is being dragged. */
-    isDragging: M,
-    /** Starting coordinates for panning. */
-    panStart: P,
-    /** Current horizontal offset for panning. */
-    offsetX: k,
-    /** Current vertical offset for panning. */
-    offsetY: N,
-    /** Current mode ('pan' or 'draw') */
-    mode: W,
-    /** Current line color. */
-    lineColor: E,
-    /** Current line width. */
-    lineWidth: $,
-    /** Function to set the brightness level. */
-    setBrightness: _,
-    /** Function to set the contrast level. */
-    setContrast: ee,
-    /** Function to set the saturation level. */
-    setSaturate: re,
-    /** Function to set the grayscale level. */
-    setGrayscale: te,
-    /** Function to set the rotation angle. */
-    setRotate: ae,
-    /** Function to set the horizontal flip state. */
-    setFlipHorizontal: ne,
-    /** Function to set the vertical flip state. */
-    setFlipVertical: oe,
-    /** Function to set the zoom level. */
-    setZoom: z,
-    /** Function to set the dragging state. */
-    setIsDragging: v,
-    /** Function to set the starting coordinates for panning. */
-    setPanStart: B,
-    /** Function to set the horizontal offset for panning. */
-    setOffsetX: H,
-    /** Function to set the vertical offset for panning. */
-    setOffsetY: X,
-    /** Function to zoom in. */
-    handleZoomIn: le,
-    /** Function to zoom out. */
-    handleZoomOut: ce,
-    /** Function to handle pointer down events. */
-    handlePointerDown: (e) => {
-      if (W === "draw") {
-        const r = p.current;
-        if (!r) return;
-        const n = r.getBoundingClientRect(), l = r.width / n.width, d = r.height / n.height, h = (e.clientX - n.left) * l, g = (e.clientY - n.top) * d;
-        O({ x: h, y: g }), m.current.push({ path: [{ x: h, y: g }], color: E, width: $ });
-      } else {
-        v(true);
-        const r = e.clientX - (x ? -k : k), n = e.clientY - (b ? -N : N);
-        B({ x: r, y: n });
+  });
+  loads.set(scriptUrl, { promise, abort });
+  return promise;
+};
+var resetLoader = (scriptUrl = defaultScriptUrl) => {
+  var _a;
+  const tracked = loads.get(scriptUrl);
+  loads.delete(scriptUrl);
+  tracked == null ? void 0 : tracked.abort(new Error(`The image editor loader was reset: ${scriptUrl}`));
+  (_a = findScriptTag(scriptUrl)) == null ? void 0 : _a.remove();
+  delete window.ImageEditor;
+};
+function ImageEditorInner(props, ref) {
+  const { image, options = {}, scriptUrl, minHeight = 500, style = {} } = props;
+  const [editor, setEditor] = (0, import_react.useState)(null);
+  const containerRef = (0, import_react.useRef)(null);
+  const generatedId = (0, import_react.useId)();
+  const editorId = props.editorId || `image-editor-${generatedId}`;
+  (0, import_react.useImperativeHandle)(ref, () => ({ editor }), [editor]);
+  const latestPropsRef = (0, import_react.useRef)(props);
+  (0, import_react.useEffect)(() => {
+    latestPropsRef.current = props;
+  });
+  const chainRef = (0, import_react.useRef)(Promise.resolve());
+  const editorRef = (0, import_react.useRef)(null);
+  const appliedImageRef = (0, import_react.useRef)(null);
+  const appliedUpdatableRef = (0, import_react.useRef)(null);
+  const fail = (error) => {
+    const err = error instanceof Error ? error : new Error(String(error));
+    const { onError } = latestPropsRef.current;
+    if (onError) {
+      try {
+        onError(err);
+      } catch (callbackError) {
+        console.error(
+          "[react-image-editor] onError callback threw",
+          callbackError
+        );
       }
-    },
-    /** Function to handle pointer up events. */
-    handlePointerUp: () => {
-      v(false), O(null);
-    },
-    /** Function to handle pointer move events. */
-    handlePointerMove: (e) => {
-      if (W === "draw" && U) {
-        const r = p.current, n = r == null ? void 0 : r.getContext("2d"), l = r == null ? void 0 : r.getBoundingClientRect();
-        if (!r || !n || !l) return;
-        const d = r.width / l.width, h = r.height / l.height, g = (e.clientX - l.left) * d, F = (e.clientY - l.top) * h, de = m.current[m.current.length - 1].path;
-        n.strokeStyle = E, n.lineWidth = $, n.lineCap = "round", n.lineJoin = "round", n.beginPath(), n.moveTo(U.x, U.y), n.lineTo(g, F), n.stroke(), O({ x: g, y: F }), de.push({ x: g, y: F });
+    } else {
+      console.error("[react-image-editor]", err);
+    }
+  };
+  const { theme, locale, translations, ...remountOptions } = options;
+  const remountKey = JSON.stringify(remountOptions);
+  const updatableKey = JSON.stringify([theme, locale, translations]);
+  (0, import_react.useEffect)(() => {
+    let cancelled = false;
+    let instance = null;
+    chainRef.current = chainRef.current.then(async () => {
+      var _a, _b;
+      if (cancelled) return;
+      await loadScript(scriptUrl);
+      if (cancelled) return;
+      const embed = window.ImageEditor;
+      const container = containerRef.current;
+      if (!embed) {
+        throw new Error(
+          "The embed script loaded but window.ImageEditor is unavailable."
+        );
+      }
+      if (!container) return;
+      const current = latestPropsRef.current;
+      const mountImage = current.image;
+      const mountOptions = current.options || {};
+      const created = await embed.createEditor({
+        ...mountOptions,
+        container,
+        image: mountImage,
+        onSave: (result) => {
+          var _a2, _b2;
+          return (_b2 = (_a2 = latestPropsRef.current).onSave) == null ? void 0 : _b2.call(_a2, result);
+        },
+        onCancel: () => {
+          var _a2, _b2;
+          return (_b2 = (_a2 = latestPropsRef.current).onCancel) == null ? void 0 : _b2.call(_a2);
+        },
+        onLoadError: () => {
+          var _a2, _b2;
+          return (_b2 = (_a2 = latestPropsRef.current).onLoadError) == null ? void 0 : _b2.call(_a2);
+        }
+      });
+      if (cancelled) {
+        created.destroy();
         return;
       }
-      if (M && P) {
-        e.preventDefault();
-        const r = e.clientX - P.x, n = e.clientY - P.y;
-        H(x ? -r : r), X(b ? -n : n);
+      instance = created;
+      editorRef.current = created;
+      appliedImageRef.current = mountImage;
+      appliedUpdatableRef.current = JSON.stringify([
+        mountOptions.theme,
+        mountOptions.locale,
+        mountOptions.translations
+      ]);
+      setEditor(created);
+      try {
+        (_b = (_a = latestPropsRef.current).onLoad) == null ? void 0 : _b.call(_a, created);
+      } catch (callbackError) {
+        console.error(
+          "[react-image-editor] onLoad callback threw",
+          callbackError
+        );
       }
-    },
-    /** Function to handle wheel events for zooming. */
-    handleWheel: (e) => {
-      e.deltaY < 0 ? le() : ce();
-    },
-    /** Function to download the edited image. */
-    downloadImage: a,
-    /** Function to generate the edited image file. */
-    generateEditedFile: ue,
-    /** Function to reset filters and styles to default. */
-    resetFilters: () => {
-      _(T), ee(f), re(G), te(J), ae(D), ne(q), oe(A), z(K), j(y), se(Q), m.current = [], H(0), X(0), B(null), v(false), ie("pan"), R();
-    },
-    /** Function to apply filters and transformations. */
-    applyFilter: R,
-    /** Function to set the mode. */
-    setMode: ie,
-    /** Function to set the line color. */
-    setLineColor: j,
-    /** Function to set the line width. */
-    setLineWidth: se
-  };
-};
-var xe = "rpe-text-gray-900 rpe-bg-white rpe-border rpe-border-gray-300 rpe-ml-2 focus:rpe-outline-hidden hover:rpe-bg-gray-100 focus:rpe-ring-4 focus:rpe-ring-gray-100 rpe-font-medium rpe-rounded-full rpe-text-sm rpe-px-2 rpe-py-1 dark:rpe-bg-gray-800 dark:rpe-text-white dark:rpe-border-gray-600 dark:hover:rpe-bg-gray-700 dark:hover:rpe-border-gray-600 dark:focus:rpe-ring-gray-700";
-var Ie = ({
-  file: c,
-  onSaveImage: T,
-  allowColorEditing: f = true,
-  allowFlip: G = true,
-  allowRotate: J = true,
-  allowZoom: q = true,
-  allowDrawing: A = true,
-  downloadOnSave: K,
-  open: D,
-  onClose: y,
-  modalHeight: Q,
-  modalWidth: pe,
-  canvasHeight: p,
-  canvasWidth: w,
-  maxCanvasHeight: L,
-  maxCanvasWidth: he,
-  labels: o = {
-    close: "Close",
-    save: "Save",
-    rotate: "Rotate",
-    brightness: "Brightness",
-    contrast: "Contrast",
-    saturate: "Saturate",
-    grayscale: "Grayscale",
-    reset: "Reset photo",
-    flipHorizontal: "Flip photo horizontally",
-    flipVertical: "Flip photo vertically",
-    zoomIn: "Zoom in",
-    zoomOut: "Zoom out",
-    draw: "Draw",
-    brushColor: "Choose brush color",
-    brushWidth: "Choose brush width"
-  }
-}) => {
-  const {
-    canvasRef: _,
-    brightness: S,
-    setBrightness: ee,
-    contrast: V,
-    setContrast: re,
-    saturate: Y,
-    setSaturate: te,
-    grayscale: I,
-    setGrayscale: ae,
-    rotate: x,
-    setRotate: ne,
-    flipHorizontal: b,
-    setFlipHorizontal: oe,
-    flipVertical: u,
-    setFlipVertical: z,
-    mode: M,
-    setMode: v,
-    setLineColor: P,
-    lineColor: B,
-    setLineWidth: k,
-    lineWidth: H,
-    isDragging: N,
-    handlePointerDown: X,
-    handlePointerUp: W,
-    handlePointerMove: ie,
-    handleWheel: U,
-    handleZoomIn: O,
-    handleZoomOut: E,
-    resetFilters: j,
-    downloadImage: $,
-    generateEditedFile: se
-  } = be({ file: c });
+    }).catch((error) => {
+      if (!window.__ImageEditorImpl__) {
+        resetLoader(scriptUrl);
+      }
+      fail(error);
+    });
+    return () => {
+      cancelled = true;
+      editorRef.current = null;
+      setEditor(null);
+      chainRef.current = chainRef.current.then(() => {
+        instance == null ? void 0 : instance.destroy();
+        instance = null;
+      }).catch(fail);
+    };
+  }, [scriptUrl, remountKey]);
   (0, import_react.useEffect)(() => {
-    j();
-  }, [D]);
-  const m = (a, C, le, ce) => {
-    var ge;
-    const Z = parseInt((ge = a.target) == null ? void 0 : ge.value);
-    !isNaN(Z) && Z >= le && Z <= ce && C(Z);
-  }, me = [
-    {
-      name: o.rotate,
-      value: x,
-      setValue: ne,
-      min: -180,
-      max: 180,
-      type: "range",
-      id: "rotateInput",
-      "aria-labelledby": "rotateInputLabel",
-      hide: !J
-    },
-    {
-      name: o.brightness,
-      value: S,
-      setValue: ee,
-      min: 0,
-      max: 200,
-      type: "range",
-      id: "brightnessInput",
-      "aria-labelledby": "brightnessInputLabel",
-      hide: !f
-    },
-    {
-      name: o.contrast,
-      value: V,
-      setValue: re,
-      min: 0,
-      max: 200,
-      type: "range",
-      id: "contrastInput",
-      "aria-labelledby": "contrastInputLabel",
-      hide: !f
-    },
-    {
-      name: o.saturate,
-      value: Y,
-      setValue: te,
-      min: 0,
-      max: 200,
-      type: "range",
-      id: "saturateInput",
-      "aria-labelledby": "saturateInputLabel",
-      hide: !f
-    },
-    {
-      name: o.grayscale,
-      value: I,
-      setValue: ae,
-      min: 0,
-      max: 100,
-      type: "range",
-      id: "grayscaleInput",
-      "aria-labelledby": "grayscaleInputLabel",
-      hide: !f
+    if (!editor) return;
+    if (appliedImageRef.current === image) return;
+    const instance = editor;
+    chainRef.current = chainRef.current.then(async () => {
+      if (editorRef.current !== instance) return;
+      const target = latestPropsRef.current.image;
+      if (target === appliedImageRef.current) return;
+      await instance.reset(target);
+      appliedImageRef.current = target;
+    }).catch(fail);
+  }, [editor, image]);
+  (0, import_react.useEffect)(() => {
+    if (!editor) return;
+    if (editorRef.current !== editor) return;
+    if (appliedUpdatableRef.current === updatableKey) return;
+    appliedUpdatableRef.current = updatableKey;
+    try {
+      editor.updateOptions({ theme, locale, translations });
+    } catch (error) {
+      fail(error);
     }
-  ], R = () => {
-    j(), y && y();
-  }, ue = async () => {
-    K && $();
-    const a = await se();
-    a && T(a), y && y();
-  };
-  return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(import_jsx_runtime.Fragment, { children: D && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(import_jsx_runtime.Fragment, { children: [
-    /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
-      "div",
-      {
-        "data-testid": "photo-editor-main",
-        className: "photo-editor-main rpe-justify-center rpe-items-center rpe-flex rpe-overflow-auto rpe-fixed rpe-inset-0 rpe-z-50",
-        children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(
-          "div",
-          {
-            style: {
-              height: Q ?? "38rem",
-              width: pe ?? "40rem"
-            },
-            id: "photo-editor-modal",
-            className: "rpe-relative rpe-rounded-lg rpe-shadow-lg rpe-max-sm:w-[22rem] rpe-bg-white dark:rpe-bg-[#1e1e1e]",
-            children: [
-              /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { className: "rpe-flex rpe-justify-end rpe-p-2 rpe-rounded-t", children: [
-                /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", { className: xe, onClick: R, type: "button", children: o.close }),
-                /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
-                  "button",
-                  {
-                    className: xe,
-                    onClick: () => void ue(),
-                    type: "button",
-                    "data-testid": "save-button",
-                    children: o.save
-                  }
-                )
-              ] }),
-              /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: "rpe-p-2", children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { className: "rpe-flex rpe-flex-col", children: [
-                /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
-                  "canvas",
-                  {
-                    style: {
-                      width: w ?? "auto",
-                      height: p ?? "auto",
-                      maxHeight: L ?? "22rem",
-                      maxWidth: he ?? "36rem"
-                    },
-                    className: `rpe-canvas rpe-touch-none rpe-border dark:rpe-border-gray-700 rpe-object-fill rpe-mx-auto 
-											${M === "draw" ? "rpe-cursor-crosshair" : N ? "rpe-cursor-grabbing" : "rpe-cursor-grab"}`,
-                    "data-testid": "image-editor-canvas",
-                    id: "rpe-canvas",
-                    ref: _,
-                    onPointerDown: X,
-                    onPointerMove: ie,
-                    onPointerUp: W,
-                    onPointerLeave: W,
-                    onWheel: U,
-                    width: typeof w == "number" ? w : void 0,
-                    height: typeof p == "number" ? p : void 0
-                  }
-                ),
-                /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: "rpe-items-center rpe-flex rpe-m-1 rpe-flex-col", children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: "rpe-flex rpe-flex-col rpe-bottom-12 rpe-gap-1 rpe-mt-4 rpe-max-sm:w-72 rpe-w-11/12 rpe-absolute ", children: me.map(
-                  (a) => !a.hide && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(
-                    "div",
-                    {
-                      className: "rpe-flex rpe-flex-row rpe-items-center",
-                      children: [
-                        /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(
-                          "label",
-                          {
-                            id: `${a.name}InputLabel`,
-                            className: "rpe-text-xs rpe-font-medium rpe-text-gray-900 dark:rpe-text-white rpe-w-10",
-                            htmlFor: a.id,
-                            children: [
-                              a.name[0].toUpperCase() + a.name.slice(1),
-                              ":",
-                              " "
-                            ]
-                          }
-                        ),
-                        /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
-                          "input",
-                          {
-                            id: a.id,
-                            type: a.type,
-                            value: a.value,
-                            step: "1",
-                            onChange: (C) => m(C, a.setValue, a.min, a.max),
-                            min: a.min,
-                            max: a.max,
-                            className: "rpe-ml-[1.7rem] rpe-w-full rpe-h-1 rpe-bg-gray-200 rpe-rounded-lg rpe-appearance-none rpe-cursor-pointer rpe-range-sm dark:rpe-bg-gray-700",
-                            "aria-labelledby": `${a.name}InputLabel`,
-                            "aria-valuemin": a.min,
-                            "aria-valuemax": a.max,
-                            "aria-valuenow": a.value
-                          }
-                        ),
-                        /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
-                          "input",
-                          {
-                            type: "number",
-                            value: a.value,
-                            onChange: (C) => m(C, a.setValue, a.min, a.max),
-                            min: a.min,
-                            max: a.max,
-                            className: "rpe-w-14 rpe-ml-2 rpe-rounded-md rpe-text-right rpe-bg-gray-100 rpe-text-black dark:rpe-bg-gray-700 dark:rpe-text-white",
-                            "aria-labelledby": `${a.name}InputLabel`,
-                            "aria-valuemin": a.min,
-                            "aria-valuemax": a.max,
-                            "aria-valuenow": a.value
-                          }
-                        )
-                      ]
-                    },
-                    a.name
-                  )
-                ) }) }),
-                /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: "rpe-flex rpe-justify-center rpe-items-center rpe-content-center", children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { className: "rpe-absolute rpe-bottom-0 rpe-mt-2 rpe-flex rpe-items-center", children: [
-                  /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
-                    "button",
-                    {
-                      title: o.reset,
-                      className: "rpe-mx-1 focus:rpe-ring-2 focus:rpe-ring-gray-300 dark:focus:rpe-ring-gray-700 rpe-rounded-md rpe-p-1",
-                      onClick: j,
-                      "aria-label": o.reset,
-                      type: "button",
-                      children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(
-                        "svg",
-                        {
-                          xmlns: "http://www.w3.org/2000/svg",
-                          width: "24",
-                          height: "24",
-                          viewBox: "0 0 24 24",
-                          fill: "none",
-                          stroke: "currentColor",
-                          strokeWidth: "2",
-                          strokeLinecap: "round",
-                          strokeLinejoin: "round",
-                          className: "lucide lucide-rotate-ccw dark:rpe-stroke-slate-200",
-                          children: [
-                            /* @__PURE__ */ (0, import_jsx_runtime.jsx)("path", { d: "M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" }),
-                            /* @__PURE__ */ (0, import_jsx_runtime.jsx)("path", { d: "M3 3v5h5" })
-                          ]
-                        }
-                      )
-                    }
-                  ),
-                  G && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { className: "rpe-inline-block", "data-testid": "flip-btns", children: [
-                    /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
-                      "button",
-                      {
-                        className: "rpe-mx-1 focus:rpe-ring-2 focus:rpe-ring-gray-300 dark:focus:rpe-ring-gray-700 rpe-rounded-md rpe-p-1",
-                        onClick: () => oe(!b),
-                        type: "button",
-                        title: o.flipHorizontal,
-                        "aria-label": o.flipHorizontal,
-                        children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(
-                          "svg",
-                          {
-                            xmlns: "http://www.w3.org/2000/svg",
-                            width: "24",
-                            height: "24",
-                            viewBox: "0 0 24 24",
-                            fill: "none",
-                            stroke: "currentColor",
-                            strokeWidth: "2",
-                            strokeLinecap: "round",
-                            strokeLinejoin: "round",
-                            className: "lucide lucide-flip-horizontal dark:rpe-stroke-slate-200",
-                            children: [
-                              /* @__PURE__ */ (0, import_jsx_runtime.jsx)("path", { d: "M8 3H5a2 2 0 0 0-2 2v14c0 1.1.9 2 2 2h3" }),
-                              /* @__PURE__ */ (0, import_jsx_runtime.jsx)("path", { d: "M16 3h3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-3" }),
-                              /* @__PURE__ */ (0, import_jsx_runtime.jsx)("path", { d: "M12 20v2" }),
-                              /* @__PURE__ */ (0, import_jsx_runtime.jsx)("path", { d: "M12 14v2" }),
-                              /* @__PURE__ */ (0, import_jsx_runtime.jsx)("path", { d: "M12 8v2" }),
-                              /* @__PURE__ */ (0, import_jsx_runtime.jsx)("path", { d: "M12 2v2" })
-                            ]
-                          }
-                        )
-                      }
-                    ),
-                    /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
-                      "button",
-                      {
-                        className: "rpe-mx-1 focus:rpe-ring-2 focus:rpe-ring-gray-300 dark:focus:rpe-ring-gray-700 rpe-rounded-md rpe-p-1",
-                        onClick: () => z(!u),
-                        type: "button",
-                        title: o.flipVertical,
-                        "aria-label": o.flipVertical,
-                        children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(
-                          "svg",
-                          {
-                            xmlns: "http://www.w3.org/2000/svg",
-                            width: "24",
-                            height: "24",
-                            viewBox: "0 0 24 24",
-                            fill: "none",
-                            stroke: "currentColor",
-                            strokeWidth: "2",
-                            strokeLinecap: "round",
-                            strokeLinejoin: "round",
-                            className: "lucide lucide-flip-vertical dark:rpe-stroke-slate-200",
-                            children: [
-                              /* @__PURE__ */ (0, import_jsx_runtime.jsx)("path", { d: "M21 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v3" }),
-                              /* @__PURE__ */ (0, import_jsx_runtime.jsx)("path", { d: "M21 16v3a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-3" }),
-                              /* @__PURE__ */ (0, import_jsx_runtime.jsx)("path", { d: "M4 12H2" }),
-                              /* @__PURE__ */ (0, import_jsx_runtime.jsx)("path", { d: "M10 12H8" }),
-                              /* @__PURE__ */ (0, import_jsx_runtime.jsx)("path", { d: "M16 12h-2" }),
-                              /* @__PURE__ */ (0, import_jsx_runtime.jsx)("path", { d: "M22 12h-2" })
-                            ]
-                          }
-                        )
-                      }
-                    )
-                  ] }),
-                  q && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { className: "rpe-inline-block", "data-testid": "zoom-btns", children: [
-                    /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
-                      "button",
-                      {
-                        "data-testid": "zoom-in",
-                        type: "button",
-                        className: "rpe-mx-1 focus:rpe-ring-2 focus:rpe-ring-gray-300 dark:focus:rpe-ring-gray-700 rpe-rounded-md rpe-p-1",
-                        onClick: O,
-                        title: o.zoomIn,
-                        "aria-label": o.zoomIn,
-                        children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(
-                          "svg",
-                          {
-                            xmlns: "http://www.w3.org/2000/svg",
-                            width: "24",
-                            height: "24",
-                            viewBox: "0 0 24 24",
-                            fill: "none",
-                            stroke: "currentColor",
-                            strokeWidth: "2",
-                            strokeLinecap: "round",
-                            strokeLinejoin: "round",
-                            className: "lucide lucide-zoom-in dark:rpe-stroke-slate-200",
-                            children: [
-                              /* @__PURE__ */ (0, import_jsx_runtime.jsx)("circle", { cx: "11", cy: "11", r: "8" }),
-                              /* @__PURE__ */ (0, import_jsx_runtime.jsx)("line", { x1: "21", x2: "16.65", y1: "21", y2: "16.65" }),
-                              /* @__PURE__ */ (0, import_jsx_runtime.jsx)("line", { x1: "11", x2: "11", y1: "8", y2: "14" }),
-                              /* @__PURE__ */ (0, import_jsx_runtime.jsx)("line", { x1: "8", x2: "14", y1: "11", y2: "11" })
-                            ]
-                          }
-                        )
-                      }
-                    ),
-                    /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
-                      "button",
-                      {
-                        "data-testid": "zoom-out",
-                        type: "button",
-                        className: "rpe-mx-1 focus:rpe-ring-2 focus:rpe-ring-gray-300 dark:focus:rpe-ring-gray-700 rpe-rounded-md rpe-p-1",
-                        onClick: E,
-                        title: o.zoomOut,
-                        "aria-label": o.zoomOut,
-                        children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(
-                          "svg",
-                          {
-                            xmlns: "http://www.w3.org/2000/svg",
-                            width: "24",
-                            height: "24",
-                            viewBox: "0 0 24 24",
-                            fill: "none",
-                            stroke: "currentColor",
-                            strokeWidth: "2",
-                            strokeLinecap: "round",
-                            strokeLinejoin: "round",
-                            className: "lucide lucide-zoom-out dark:rpe-stroke-slate-200",
-                            children: [
-                              /* @__PURE__ */ (0, import_jsx_runtime.jsx)("circle", { cx: "11", cy: "11", r: "8" }),
-                              /* @__PURE__ */ (0, import_jsx_runtime.jsx)("line", { x1: "21", x2: "16.65", y1: "21", y2: "16.65" }),
-                              /* @__PURE__ */ (0, import_jsx_runtime.jsx)("line", { x1: "8", x2: "14", y1: "11", y2: "11" })
-                            ]
-                          }
-                        )
-                      }
-                    )
-                  ] }),
-                  A && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { className: "rpe-flex rpe-items-center", children: [
-                    /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
-                      "button",
-                      {
-                        "data-testid": "draw-btn",
-                        type: "button",
-                        className: "rpe-mx-1 focus:rpe-ring-2 focus:rpe-ring-gray-300 dark:focus:rpe-ring-gray-700 rpe-rounded-md rpe-p-1",
-                        onClick: () => M == "pan" ? v("draw") : v("pan"),
-                        title: o.draw,
-                        "aria-label": o.draw,
-                        children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(
-                          "svg",
-                          {
-                            xmlns: "http://www.w3.org/2000/svg",
-                            width: "24",
-                            height: "24",
-                            viewBox: "0 0 24 24",
-                            fill: "none",
-                            stroke: "currentColor",
-                            strokeWidth: "2",
-                            strokeLinecap: "round",
-                            strokeLinejoin: "round",
-                            className: "lucide lucide-brush dark:rpe-stroke-slate-200",
-                            children: [
-                              /* @__PURE__ */ (0, import_jsx_runtime.jsx)("path", { d: "m9.06 11.9 8.07-8.06a2.85 2.85 0 1 1 4.03 4.03l-8.06 8.08" }),
-                              /* @__PURE__ */ (0, import_jsx_runtime.jsx)("path", { d: "M7.07 14.94c-1.66 0-3 1.35-3 3.02 0 1.33-2.5 1.52-2 2.02 1.08 1.1 2.49 2.02 4 2.02 2.2 0 4-1.8 4-4.04a3.01 3.01 0 0 0-3-3.02z" })
-                            ]
-                          }
-                        )
-                      }
-                    ),
-                    M == "draw" && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { className: "rpe-flex rpe-items-center dark:rpe-bg-zinc-600 rpe-bg-zinc-200 rpe-p-1 rpe-rounded-md", children: [
-                      /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
-                        "input",
-                        {
-                          type: "color",
-                          onChange: (a) => P(a.target.value),
-                          className: "rpe-mx-1 rpe-w-6 rpe-h-6 rpe-rounded-sm focus:rpe-ring-2 focus:rpe-ring-gray-300 dark:focus:rpe-ring-gray-700",
-                          id: "rpe-brush-color",
-                          value: B,
-                          title: o.brushColor,
-                          "aria-label": o.brushColor
-                        }
-                      ),
-                      /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
-                        "input",
-                        {
-                          type: "number",
-                          title: o.brushWidth,
-                          "aria-label": o.brushWidth,
-                          onChange: (a) => m(a, k, 2, 100),
-                          className: "rpe-w-12 rpe-ml-2 rpe-rounded-md rpe-text-right rpe-bg-gray-100 rpe-text-black dark:rpe-bg-gray-700 dark:rpe-text-white rpe-mx-1 rpe-p-0 rpe-text-sm",
-                          id: "rpe-brush-width",
-                          value: H,
-                          min: 2,
-                          max: 100
-                        }
-                      )
-                    ] })
-                  ] })
-                ] }) })
-              ] }) })
-            ]
-          }
-        )
+  }, [editor, updatableKey]);
+  return /* @__PURE__ */ import_react.default.createElement(
+    "div",
+    {
+      style: {
+        flex: 1,
+        display: "flex",
+        minHeight
       }
-    ),
-    /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: "rpe-opacity-75 rpe-fixed rpe-inset-0 rpe-z-40 rpe-bg-black" })
-  ] }) });
-};
+    },
+    /* @__PURE__ */ import_react.default.createElement("div", { id: editorId, ref: containerRef, style: { ...style, flex: 1 } })
+  );
+}
+var ImageEditor = import_react.default.forwardRef(ImageEditorInner);
 
 // src/components/editor.tsx
-var import_jsx_runtime2 = __toESM(require_jsx_runtime(), 1);
-function Editor() {
-  const [file, setFile] = (0, import_react2.useState)();
-  const [showModal, setShowModal] = (0, import_react2.useState)(false);
-  const [preview, setPreview] = (0, import_react2.useState)();
-  const inputRef = (0, import_react2.useRef)(null);
-  const setFileData = (e) => {
-    const selectedFile = e.target.files?.[0];
-    if (selectedFile && selectedFile.type.startsWith("image/")) {
-      setFile(selectedFile);
-      setPreview(URL.createObjectURL(selectedFile));
-    }
-    e.target.value = "";
-  };
-  const handleSaveImage = (editedFile) => {
-    setFile(editedFile);
-    setPreview(URL.createObjectURL(editedFile));
-    setShowModal(false);
-    const url = URL.createObjectURL(editedFile);
-    const link = document.createElement("a");
-    link.href = url;
-    link.download = `photo-editee-${Date.now()}.${editedFile.type.split("/")[1] || "png"}`;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    URL.revokeObjectURL(url);
-  };
-  return /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)("div", { className: "min-h-screen bg-gradient-to-br from-rose-50 via-amber-50 to-violet-50 px-4 py-10 text-slate-800 transition-colors duration-500 dark:from-slate-950 dark:via-slate-900 dark:to-indigo-950 dark:text-slate-100 sm:px-6 lg:px-8", children: [
-    /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)("div", { className: "mx-auto max-w-5xl", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)("header", { className: "mb-10 flex items-center gap-4", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("div", { className: "flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-violet-500 to-fuchsia-500 text-2xl text-white shadow-lg shadow-violet-300/50 dark:shadow-violet-900/50", children: "\u2726" }),
-        /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)("div", { children: [
-          /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("h1", { className: "text-2xl font-bold tracking-tight sm:text-3xl", children: "Photo Studio" }),
-          /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("p", { className: "mt-1 text-sm text-slate-500 dark:text-slate-400", children: "Importez, retouchez et sublimez vos photos. \u2728" })
-        ] })
-      ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("div", { className: "overflow-hidden rounded-[2rem] border border-white/60 bg-white/80 shadow-2xl shadow-violet-200/40 backdrop-blur-xl transition-colors duration-500 dark:border-white/10 dark:bg-slate-900/70 dark:shadow-black/40", children: /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)("div", { className: "grid md:grid-cols-2", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)("div", { className: "flex flex-col justify-center p-6 sm:p-10", children: [
-          /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("span", { className: "mb-3 inline-block w-fit rounded-full bg-violet-100 px-3 py-1 text-xs font-bold uppercase tracking-[0.2em] text-violet-700 dark:bg-violet-500/20 dark:text-violet-300", children: "Votre espace cr\xE9atif" }),
-          /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("h2", { className: "text-2xl font-bold sm:text-3xl", children: "Donnez vie \xE0 vos images. \u{1F3A8}" }),
-          /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("p", { className: "mt-3 max-w-md text-sm leading-6 text-slate-500 dark:text-slate-400", children: "Choisissez une photo depuis votre appareil et utilisez notre \xE9diteur pour lui apporter votre touche personnelle." }),
-          /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)(
-            "button",
-            {
-              type: "button",
-              onClick: () => inputRef.current?.click(),
-              className: "group mt-8 flex min-h-40 w-full flex-col items-center justify-center rounded-2xl border-2 border-dashed border-violet-200 bg-violet-50/60 px-5 py-7 transition-all duration-300 hover:-translate-y-0.5 hover:border-violet-400 hover:bg-violet-100/70 hover:shadow-lg hover:shadow-violet-200/50 focus:outline-none focus:ring-4 focus:ring-violet-100 dark:border-violet-500/30 dark:bg-violet-500/10 dark:hover:border-violet-400 dark:hover:bg-violet-500/20 dark:focus:ring-violet-500/20",
-              children: [
-                /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("span", { className: "mb-3 flex h-12 w-12 items-center justify-center rounded-xl bg-white text-2xl shadow-sm transition-transform duration-300 group-hover:scale-110 group-hover:rotate-6 dark:bg-slate-800", children: "\uFF0B" }),
-                /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("span", { className: "font-semibold text-slate-800 dark:text-slate-100", children: "Cliquez pour importer une photo" }),
-                /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("span", { className: "mt-2 text-xs text-slate-500 dark:text-slate-400", children: "PNG, JPG, JPEG ou WEBP" })
-              ]
+var import_jsx_runtime = __toESM(require_jsx_runtime(), 1);
+var Editor = () => {
+  const editorRef = (0, import_react2.useRef)(null);
+  return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
+    ImageEditor,
+    {
+      ref: editorRef,
+      image: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=1200",
+      minHeight: "700px",
+      options: {
+        // Identifiant de projet Unlayer (requis pour l'Assistant IA)
+        // À récupérer dans la console Unlayer
+        projectId: 1234,
+        // Thème de l'interface : "light" ou "dark"
+        theme: "light",
+        // Langue de l'interface
+        // Langues incluses : en, es, fr, de, it, pt, nl, ja, ko, zh
+        locale: "fr",
+        // Infos utilisateur transmises à l'éditeur
+        user: { id: "user_123" },
+        // Fonctionnalités activées / désactivées
+        features: {
+          imageEditor: {
+            // Position de la barre d'outils : "left" ou "right"
+            // Outils de l'éditeur.
+            // Tous sont activés par défaut.
+            // Voici comment en désactiver certains :
+            tools: {
+              // resize: false,
+              // draw: false,
+              // stickers: false,
+              // frame: { enabled: false },
+              // Personnaliser une icône :
+              // crop: { icon: "fa-crop-simple" },
+              // text: { icon: "https://exemple.com/icons/text.svg" },
             }
-          ),
-          /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(
-            "input",
-            {
-              ref: inputRef,
-              type: "file",
-              accept: "image/*",
-              onChange: setFileData,
-              className: "hidden"
-            }
-          ),
-          file && /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)("div", { className: "mt-5 flex items-center gap-3 rounded-2xl border border-slate-200/70 bg-white/70 p-3 shadow-sm backdrop-blur transition-colors duration-500 dark:border-slate-700 dark:bg-slate-800/60", children: [
-            /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("div", { className: "flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-emerald-100 text-emerald-600 dark:bg-emerald-500/20 dark:text-emerald-300", children: "\u2713" }),
-            /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)("div", { className: "min-w-0 flex-1", children: [
-              /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("p", { className: "truncate text-sm font-semibold", children: file.name }),
-              /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)("p", { className: "text-xs text-slate-500 dark:text-slate-400", children: [
-                (file.size / 1024 / 1024).toFixed(2),
-                " Mo"
-              ] })
-            ] }),
-            /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(
-              "button",
-              {
-                type: "button",
-                onClick: () => inputRef.current?.click(),
-                className: "rounded-lg px-3 py-2 text-sm font-medium text-violet-700 transition hover:bg-violet-50 dark:text-violet-300 dark:hover:bg-violet-500/20",
-                children: "Changer"
-              }
-            )
-          ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)(
-            "button",
-            {
-              type: "button",
-              disabled: !file,
-              onClick: () => setShowModal(true),
-              className: "mt-5 flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-violet-600 to-fuchsia-600 px-5 py-3.5 font-semibold text-white shadow-lg shadow-violet-300/50 transition-all duration-300 hover:-translate-y-0.5 hover:from-violet-700 hover:to-fuchsia-700 hover:shadow-xl focus:outline-none focus:ring-4 focus:ring-violet-200 disabled:cursor-not-allowed disabled:from-slate-300 disabled:to-slate-300 disabled:shadow-none disabled:hover:translate-y-0 dark:shadow-violet-900/40 dark:focus:ring-violet-500/30 dark:disabled:from-slate-700 dark:disabled:to-slate-700",
-              children: [
-                /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("span", { children: "\u2727" }),
-                "Modifier la photo",
-                /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("span", { "aria-hidden": "true", children: "\u2192" })
-              ]
-            }
-          ),
-          /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("p", { className: "mt-4 text-center text-xs text-slate-400 dark:text-slate-500", children: "Votre cr\xE9ativit\xE9, sans limites. \u{1F4AB}" })
-        ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)("div", { className: "relative flex min-h-80 items-center justify-center overflow-hidden bg-gradient-to-br from-slate-100 to-slate-200 p-6 transition-colors duration-500 dark:from-slate-800 dark:to-slate-900 sm:p-10", children: [
-          /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("div", { className: "absolute inset-0 opacity-40 [background-image:radial-gradient(#cbd5e1_1px,transparent_1px)] [background-size:18px_18px] dark:[background-image:radial-gradient(#475569_1px,transparent_1px)]" }),
-          preview ? /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)("div", { className: "relative w-full", children: [
-            /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("div", { className: "absolute -inset-2 rounded-2xl bg-white/70 shadow-xl dark:bg-slate-800/70" }),
-            /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(
-              "img",
-              {
-                src: preview,
-                alt: "Aper\xE7u de la photo s\xE9lectionn\xE9e",
-                className: "relative mx-auto max-h-[420px] w-full rounded-xl object-contain shadow-sm"
-              }
-            ),
-            /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)("div", { className: "relative mt-4 flex items-center justify-between", children: [
-              /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("span", { className: "rounded-full bg-white px-3 py-1.5 text-xs font-medium text-slate-600 shadow-sm dark:bg-slate-800 dark:text-slate-300", children: "Aper\xE7u de votre image" }),
-              /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("span", { className: "text-xs text-slate-500 dark:text-slate-400", children: file?.type.split("/")[1]?.toUpperCase() })
-            ] })
-          ] }) : /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)("div", { className: "relative flex max-w-xs flex-col items-center text-center", children: [
-            /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("div", { className: "mb-5 flex h-24 w-24 items-center justify-center rounded-3xl border border-white bg-white/80 text-5xl shadow-lg shadow-slate-200/70 dark:border-slate-700 dark:bg-slate-800/80 dark:shadow-black/30", children: "\u{1F5BC}\uFE0F" }),
-            /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("h3", { className: "text-lg font-semibold text-slate-700 dark:text-slate-200", children: "Votre photo appara\xEEtra ici" }),
-            /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("p", { className: "mt-2 text-sm leading-6 text-slate-500 dark:text-slate-400", children: "Importez une image pour commencer votre exp\xE9rience d'\xE9dition." })
-          ] })
-        ] })
-      ] }) }),
-      /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)("div", { className: "mt-6 flex flex-col justify-between gap-3 text-xs text-slate-400 dark:text-slate-500 sm:flex-row sm:items-center", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("p", { children: "Photo Studio \xB7 \xC9diteur d'images" }),
-        /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("p", { children: "Interface simple, \xE9l\xE9gante et responsive." })
-      ] })
-    ] }),
-    file && /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(
-      Ie,
-      {
-        open: showModal,
-        onClose: () => setShowModal(false),
-        file,
-        onSaveImage: handleSaveImage
+          }
+          // Assistant IA (nécessite un projectId avec l'option activée)
+          // ai: { enabled: true, assistant: true },
+        }
+      },
+      onLoad: (editor) => {
+        console.log("\xC9diteur mont\xE9", editor);
+      },
+      onSave: ({ dataUrl, blob }) => {
+        console.info("Image enregistr\xE9e :", dataUrl.length, "octets");
+        console.log("Blob :", blob);
+      },
+      onCancel: () => console.info("\xC9dition annul\xE9e"),
+      onLoadError: () => {
+        console.error(
+          "\xC9chec du chargement de l'image \u2014 v\xE9rifie l'URL et le CORS"
+        );
+      },
+      onError: (error) => {
+        console.error("Erreur de l'\xE9diteur :", error);
       }
-    )
-  ] });
-}
+    }
+  );
+};
 
 // src/renderer.tsx
-var import_jsx_runtime3 = __toESM(require_jsx_runtime(), 1);
+var import_jsx_runtime2 = __toESM(require_jsx_runtime(), 1);
 function OsuiWidget() {
   const [n, setN] = (0, import_react3.usePluginState)("com.example.osui", "clicks", 0);
-  return /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)(
+  return /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)(
     "div",
     {
       className: "rounded-xl border border-border bg-surface p-4",
       "data-testid": "osui-widget",
       children: [
-        /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("strong", { children: "Osui" }),
-        /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("p", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("strong", { children: "Osui" }),
+        /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)("p", { children: [
           "A widget injected into the host's ",
-          /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("code", { children: "dashboard.after" }),
+          /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("code", { children: "dashboard.after" }),
           " slot."
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("button", { onClick: () => setN((c) => c + 1), children: [
+        /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)("button", { onClick: () => setN((c) => c + 1), children: [
           "Clicked ",
           n,
           " times"
@@ -933,7 +381,7 @@ function OsuiWidget() {
   );
 }
 function OsuiPage() {
-  return /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("div", { className: "rounded-xl border border-border bg-surface p-4", children: /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(Editor, {}) });
+  return /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("div", { className: "rounded-xl border border-border bg-surface p-4", children: /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(Editor, {}) });
 }
 var renderer_default = (0, import_fluxplugin.definePlugin)({
   routes: [

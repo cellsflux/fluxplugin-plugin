@@ -8,9 +8,15 @@ importers:
 
   .:
     dependencies:
+      '@unlayer/react-image-editor':
+        specifier: ^1.0.2
+        version: 1.0.2(react@19.3.1)
       add:
         specifier: ^2.0.9
         version: 2.0.9
+      lucide-react:
+        specifier: ^1.57.0
+        version: 1.57.0(@types/react@19.3.0)(react@19.3.1)
       moment:
         specifier: ^2.31.0
         version: 2.31.0
@@ -385,6 +391,15 @@ packages:
   '@types/react@19.3.0':
     resolution: {integrity: sha512-N0rFCuH9YoxG9/m61l9MfpJKfmLOVU0em7ipIz6TRgSSkvReLB9vL85GB+yr8Bs5leqpvg96JSwF4ZS1s4viQg==}
 
+  '@unlayer/react-image-editor@1.0.2':
+    resolution: {integrity: sha512-VJx1jSnmHX4rpaY+GdK98PWL0sUxu0fimankgXI9S0DjwpqJvlJXYhPn9iCpCzVykvVviwU2C6qWO/wdOfXHlA==}
+    engines: {node: '>=18'}
+    peerDependencies:
+      react: '>=18'
+
+  '@unlayer/types@1.448.0':
+    resolution: {integrity: sha512-k7NhJEdp5d40pWRAp9hSpTsyjD/vCrWrinNJaZkkXRU4YK7nsa9EYvnXHmVa/TcuevmPz0JRxzi8rJ1qSfvFDw==}
+
   add@2.0.9:
     resolution: {integrity: sha512-a6+u7hP0xmII7EBQenAIb6oMp9/vcW6EmrsD0ngUbLnE69Xtwj4yCbmHLUi5LZ6ggJB+AufHTaDbW1XBiYJwFw==}
 
@@ -521,6 +536,15 @@ packages:
   lightningcss@1.32.0:
     resolution: {integrity: sha512-NXYBzinNrblfraPGyrbPoD19C1h9lfI/1mzgWYvXUTe414Gz/X1FD2XBZSZM7rRTrMA8JL3OtAaGifrIKhQ5yQ==}
     engines: {node: '>= 12.0.0'}
+
+  lucide-react@1.57.0:
+    resolution: {integrity: sha512-bXFZEucYhAzLD62Jse76AbTR6LiSLTn3Tqir2f1n8rZrWAdLodYy7jnRZSPIT89dRLk/IseMOUWG82wJtTyTTw==}
+    peerDependencies:
+      '@types/react': '*'
+      react: ^16.5.1 || ^17.0.0 || ^18.0.0 || ^19.0.0
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
 
   magic-string@0.30.21:
     resolution: {integrity: sha512-vd2F4YUyEXKGcLHoq+TEyCjxueSeHnFxyyjNp80yg0XV4vUhnDer/lvvlqM/arB5bXQN5K2/3oinyCRyx8T2CQ==}
@@ -818,6 +842,13 @@ snapshots:
     dependencies:
       csstype: 3.2.3
 
+  '@unlayer/react-image-editor@1.0.2(react@19.3.1)':
+    dependencies:
+      '@unlayer/types': 1.448.0
+      react: 19.3.1
+
+  '@unlayer/types@1.448.0': {}
+
   add@2.0.9: {}
 
   braces@3.0.3:
@@ -935,6 +966,12 @@ snapshots:
       lightningcss-linux-x64-musl: 1.32.0
       lightningcss-win32-arm64-msvc: 1.32.0
       lightningcss-win32-x64-msvc: 1.32.0
+
+  lucide-react@1.57.0(@types/react@19.3.0)(react@19.3.1):
+    dependencies:
+      react: 19.3.1
+    optionalDependencies:
+      '@types/react': 19.3.0
 
   magic-string@0.30.21:
     dependencies:
