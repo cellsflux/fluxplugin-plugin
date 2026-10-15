@@ -297,62 +297,60 @@ var ImageEditor = import_react.default.forwardRef(ImageEditorInner);
 var import_jsx_runtime = __toESM(require_jsx_runtime(), 1);
 var Editor = () => {
   const editorRef = (0, import_react2.useRef)(null);
-  return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
-    ImageEditor,
-    {
-      ref: editorRef,
-      image: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=1200",
-      minHeight: "700px",
-      options: {
-        // Identifiant de projet Unlayer (requis pour l'Assistant IA)
-        // À récupérer dans la console Unlayer
-        projectId: 1234,
-        // Thème de l'interface : "light" ou "dark"
-        theme: "light",
-        // Langue de l'interface
-        // Langues incluses : en, es, fr, de, it, pt, nl, ja, ko, zh
-        locale: "fr",
-        // Infos utilisateur transmises à l'éditeur
-        user: { id: "user_123" },
-        // Fonctionnalités activées / désactivées
-        features: {
-          imageEditor: {
-            // Position de la barre d'outils : "left" ou "right"
-            // Outils de l'éditeur.
-            // Tous sont activés par défaut.
-            // Voici comment en désactiver certains :
-            tools: {
-              // resize: false,
-              // draw: false,
-              // stickers: false,
-              // frame: { enabled: false },
-              // Personnaliser une icône :
-              // crop: { icon: "fa-crop-simple" },
-              // text: { icon: "https://exemple.com/icons/text.svg" },
-            }
-          }
-          // Assistant IA (nécessite un projectId avec l'option activée)
-          // ai: { enabled: true, assistant: true },
-        }
-      },
-      onLoad: (editor) => {
-        console.log("\xC9diteur mont\xE9", editor);
-      },
-      onSave: ({ dataUrl, blob }) => {
-        console.info("Image enregistr\xE9e :", dataUrl.length, "octets");
-        console.log("Blob :", blob);
-      },
-      onCancel: () => console.info("\xC9dition annul\xE9e"),
-      onLoadError: () => {
-        console.error(
-          "\xC9chec du chargement de l'image \u2014 v\xE9rifie l'URL et le CORS"
-        );
-      },
-      onError: (error) => {
-        console.error("Erreur de l'\xE9diteur :", error);
-      }
+  const [imageSrc, setImageSrc] = (0, import_react2.useState)(null);
+  const handleFileChange = (eve) => {
+    const file = eve.target.files?.[0];
+    if (!file) return;
+    if (!file.type.startsWith("image/")) {
+      alert("Veuillez s\xE9lectionner un fichier image.");
+      return;
     }
-  );
+    if (file.size > 10 * 1024 * 1024) {
+      alert("L'image est trop volumineuse (max 10 Mo).");
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      setImageSrc(e.target.result);
+    };
+    reader.readAsDataURL(file);
+  };
+  return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [
+    /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
+      "input",
+      {
+        type: "file",
+        accept: "image/*",
+        onChange: handleFileChange,
+        style: { marginBottom: 16 }
+      }
+    ),
+    imageSrc && /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
+      ImageEditor,
+      {
+        ref: editorRef,
+        image: imageSrc,
+        minHeight: "700px",
+        options: {
+          theme: "light",
+          locale: "fr",
+          projectId: 1234
+        },
+        onSave: ({ dataUrl, blob }) => {
+          console.info("Image enregistr\xE9e :", dataUrl.length, "octets");
+        },
+        onCancel: () => {
+          setImageSrc(null);
+        },
+        onLoadError: () => {
+          console.error("\xC9chec du chargement de l'image");
+        },
+        onError: (error) => {
+          console.error("Erreur de l'\xE9diteur :", error);
+        }
+      }
+    )
+  ] });
 };
 
 // node_modules/.pnpm/lucide-react@1.57.0_@types+react@19.3.0_react@19.3.1/node_modules/lucide-react/dist/esm/createLucideIcon.mjs

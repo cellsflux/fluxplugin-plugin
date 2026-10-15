@@ -282,9 +282,9 @@
     {
       "id": "com.cellsflux.osui",
       "name": "Osui",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "description": "Osui plugin",
-      "author": "Your name",
+      "author": "jison",
       "permissions": [
         "commands",
         "routes",
@@ -310,9 +310,9 @@
         "dist/index.css": "65c952bfac71607dbb7bd138c4f6b88ec38a4399c1f3f0d14f9b02900da2606d",
         "dist/main.mjs": "f17d90498bcacad8a9f456027fe41ed47c4d929db9f2b3eb71c2b8027b5d83d8",
         "dist/renderer.css": "e829262c212fd58d5cd70629ba9b67060e6fc0d5d30ce69484a0f69df7217f66",
-        "dist/renderer.js": "73ffc092bfb9bee90aad62f662311879be3f3ef8c2b59596d32710b2e553decc",
-        "dist/tailwind.css": "5406df3fbcc98b2baf20280bada74b96bd721174d7df96332142216815dc37d0",
-        "plugin.json": "fd8fdef6618a6d51ba73d7e1aee762c7abfe15b59c1da5ac38ea2d8879ca3487"
+        "dist/renderer.js": "213a1d12ee73716aad91fff405d95a7bcbeeab718ea72adb10a231165f58052b",
+        "dist/tailwind.css": "46d70e7893e871ff0fa561db2c0ce77a8f40c12b85af6c5edc30df786de5222f",
+        "plugin.json": "14f5d1222aaad456c39c4cb707bcd84104cd3c3d650a4d8849f03b71c4687c3d"
       },
       "license": "MIT",
       "icon": "plugins/osui/assets/icon.svg",

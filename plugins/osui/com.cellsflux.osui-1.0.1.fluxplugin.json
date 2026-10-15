@@ -1,0 +1,17 @@
+{
+  "id": "com.cellsflux.osui",
+  "name": "Osui",
+  "version": "1.0.1",
+  "description": "Osui plugin",
+  "author": "jison",
+  "permissions": [
+    "commands",
+    "routes",
+    "menus",
+    "ui",
+    "styles",
+    "notifications"
+  ],
+  "file": "com.cellsflux.osui-1.0.1.tgz",
+  "sha256": "33e07bfaa836330fcca874a3fc61f727b3fb9084cbfd4dbcd59298eb8af6ca04"
+}
