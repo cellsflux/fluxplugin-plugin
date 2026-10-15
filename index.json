@@ -299,6 +299,7 @@
         "assets/icon.svg",
         "dist/index.css",
         "dist/main.mjs",
+        "dist/renderer.css",
         "dist/renderer.js",
         "dist/tailwind.css",
         "plugin.json"
@@ -308,9 +309,10 @@
         "assets/icon.svg": "5e1853a2aec00f3d69e8a72a06eb320bd30da0616813a04de92b0af4a5432f66",
         "dist/index.css": "65c952bfac71607dbb7bd138c4f6b88ec38a4399c1f3f0d14f9b02900da2606d",
         "dist/main.mjs": "f17d90498bcacad8a9f456027fe41ed47c4d929db9f2b3eb71c2b8027b5d83d8",
-        "dist/renderer.js": "829027ccb67cbfc84df1180967acd985e160f0a3031193840cac4184c318b7de",
-        "dist/tailwind.css": "109abc5f7e68b5270751d41c979ed2a4826c7be7ea220c881a1e086bfaed4fe7",
-        "plugin.json": "8bb89b9f23ca0877864159da6e51163c25dfaba4429b2a8af7cb884f07f3f0d9"
+        "dist/renderer.css": "e829262c212fd58d5cd70629ba9b67060e6fc0d5d30ce69484a0f69df7217f66",
+        "dist/renderer.js": "f18063cb52389c3e157e78ad2b3b5c3732ad1fbf2d454bfcd0c714105ffd6442",
+        "dist/tailwind.css": "bb3d6f65d7ebbb9fb4deecd581eba21cee47da2a6ce64155e779238b8867a2b0",
+        "plugin.json": "fd8fdef6618a6d51ba73d7e1aee762c7abfe15b59c1da5ac38ea2d8879ca3487"
       },
       "license": "MIT",
       "icon": "plugins/osui/assets/icon.svg",
