@@ -12,7 +12,9 @@
     "release": "fluxplugin publish"
   },
   "dependencies": {
-    "moment": "^2.31.0"
+    "add": "^2.0.9",
+    "moment": "^2.31.0",
+    "react-photo-editor": "^3.0.0"
   },
   "devDependencies": {
     "@tailwindcss/cli": "^4.0.0",

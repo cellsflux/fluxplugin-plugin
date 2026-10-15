@@ -1,9 +1,11 @@
 import { definePlugin } from "fluxplugin";
 import { usePluginState } from "fluxplugin/react";
 import moment from "moment";
+import { Editor } from "./components/editor";
 
 function OsuiWidget() {
   const [n, setN] = usePluginState("com.example.osui", "clicks", 0);
+
   return (
     <div
       className="rounded-xl border border-border bg-surface p-4"
@@ -21,12 +23,7 @@ function OsuiWidget() {
 function OsuiPage() {
   return (
     <div className="rounded-xl border border-border bg-surface p-4">
-      <h1>Osui</h1>
-
-      <p>Registered at runtime by a plugin.</p>
-      <p>
-        from independent librerie: {moment("20111031", "YYYYMMDD").fromNow()}
-      </p>
+      <Editor />
     </div>
   );
 }

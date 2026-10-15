@@ -8,13 +8,25 @@
   "repository": "https://github.com/cellsflux/fluxplugin-plugin",
   "icon": "./assets/icon.svg",
   "readme": "./README.md",
-  "categories": ["Productivity"],
-  "keywords": ["ui", "fluxplugin", "ios"],
+  "categories": [
+    "Productivity"
+  ],
+  "keywords": [
+    "ui",
+    "fluxplugin",
+    "ios"
+  ],
   "links": {},
   "main": "./dist/main.mjs",
   "renderer": "./dist/renderer.js",
-  "styles": ["./dist/index.css", "./dist/tailwind.css"],
-  "activationEvents": ["onStartup"],
+  "styles": [
+    "./dist/index.css",
+    "./dist/tailwind.css",
+    "./dist/renderer.css"
+  ],
+  "activationEvents": [
+    "onStartup"
+  ],
   "permissions": [
     "commands",
     "routes",
