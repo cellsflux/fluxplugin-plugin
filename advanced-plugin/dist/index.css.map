@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["../src/styles/index.css"],
+  "sourcesContent": [".sp-card{border:1px dashed var(--flux-accent);border-radius:12px;padding:16px}\n.sp-badge{background:var(--flux-accent);color:#fff;border-radius:99px;padding:1px 8px;font-size:11px;margin-left:8px}\n.sp-head{margin-bottom:8px}\n"],
+  "mappings": ";AAAA,CAAC;AAAQ,UAAO,IAAI,OAAO,IAAI;AAAe,iBAAc;AAAK,WAAQ;AAAI;AAC7E,CAAC;AAAS,cAAW,IAAI;AAAe,SAAM;AAAK,iBAAc;AAAK,WAAQ,IAAI;AAAI,aAAU;AAAK,eAAY;AAAG;AACpH,CAAC;AAAQ,iBAAc;AAAG;",
+  "names": []
+}

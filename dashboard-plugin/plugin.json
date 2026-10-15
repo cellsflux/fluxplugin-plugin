@@ -5,36 +5,20 @@
   "description": "Renderer-only plugin: a lazy route, a dashboard widget, a toolbar action and scoped styles.",
   "author": "fluxplugin examples",
   "renderer": "./dist/renderer.js",
-  "styles": [
-    "./dist/index.css"
-  ],
-  "activationEvents": [
-    "onStartup"
-  ],
-  "permissions": [
-    "routes",
-    "menus",
-    "ui",
-    "commands",
-    "styles"
-  ],
+  "styles": ["./dist/index.css"],
+  "activationEvents": ["onStartup"],
+  "permissions": ["routes", "menus", "ui", "commands", "styles"],
   "engines": {
     "fluxplugin": "^1.0.0"
   },
   "license": "MIT",
-  "icon": "./assets/icon.svg",
+  "icon": "./assets/icon.png",
   "readme": "./README.md",
-  "categories": [
-    "Productivity",
-    "UI"
-  ],
-  "keywords": [
-    "dashboard",
-    "widget",
-    "toolbar"
-  ],
+  "categories": ["Productivity", "UI"],
+  "keywords": ["dashboard", "widget", "toolbar"],
+  "screenshots": ["./assets/1.avif", "./assets/2.webp", "./assets/3.webp"],
   "links": {
     "docs": "https://www.npmjs.com/package/fluxplugin"
   },
-  "video": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+  "video": "https://www.w3schools.com/html/mov_bbb.mp4"
 }

@@ -1,0 +1,96 @@
+{
+  "plugins": [
+    {
+      "id": "com.example.stats",
+      "name": "Stats Service",
+      "version": "1.2.0",
+      "description": "Main + renderer plugin: validated IPC, preload API, pushed events and a typed config.",
+      "author": "fluxplugin examples",
+      "license": "MIT",
+      "permissions": [
+        "ipc",
+        "services",
+        "events",
+        "routes",
+        "menus",
+        "ui",
+        "commands",
+        "styles",
+        "storage"
+      ],
+      "icon": "plugins/backend-plugin/assets/icon.svg",
+      "readme": "plugins/backend-plugin/README.md",
+      "categories": ["Data", "Developer tools"],
+      "keywords": ["ipc", "main-process", "stats"],
+      "folder": "plugins/backend-plugin",
+      "files": [
+        "plugin.json",
+        "README.md",
+        "LICENSE",
+        "assets/icon.svg",
+        "dist/main.mjs",
+        "dist/renderer.js",
+        "dist/index.css"
+      ],
+      "hashes": {}
+    },
+    {
+      "id": "com.example.dashboard",
+      "name": "Dashboard Widgets",
+      "version": "1.0.0",
+      "description": "Renderer-only plugin: a lazy route, a dashboard widget, a toolbar action and scoped styles.",
+      "author": "fluxplugin examples",
+      "license": "MIT",
+      "permissions": ["routes", "menus", "ui", "commands", "styles"],
+      "icon": "plugins/dashboard-plugin/assets/icon.svg",
+      "readme": "plugins/dashboard-plugin/README.md",
+      "categories": ["Productivity", "UI"],
+      "keywords": ["dashboard", "widget", "toolbar"],
+      "folder": "plugins/dashboard-plugin",
+      "files": [
+        "plugin.json",
+        "README.md",
+        "LICENSE",
+        "assets/icon.svg",
+        "dist/renderer.js",
+        "dist/index.css"
+      ],
+      "hashes": {}
+    },
+    {
+      "id": "com.example.students",
+      "name": "Students Pro",
+      "version": "0.9.0",
+      "description": "Advanced plugin with hooks, events, services, guards, layout, extension points and a dependency on Stats Service.",
+      "author": "fluxplugin examples",
+      "license": "MIT",
+      "permissions": [
+        "hooks",
+        "events",
+        "services",
+        "ipc",
+        "routes",
+        "menus",
+        "ui",
+        "commands",
+        "styles"
+      ],
+      "icon": "plugins/advanced-plugin/assets/icon.svg",
+      "readme": "plugins/advanced-plugin/README.md",
+      "categories": ["Workflow"],
+      "keywords": ["hooks", "guards", "layout"],
+      "dependencies": { "com.example.stats": "^1.0.0" },
+      "folder": "plugins/advanced-plugin",
+      "files": [
+        "plugin.json",
+        "README.md",
+        "LICENSE",
+        "assets/icon.svg",
+        "dist/main.mjs",
+        "dist/renderer.js",
+        "dist/index.css"
+      ],
+      "hashes": {}
+    }
+  ]
+}

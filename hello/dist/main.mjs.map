@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["flux-shared:fluxplugin", "../src/main.ts"],
+  "sourcesContent": ["const m = globalThis.__FLUXPLUGIN_SHARED__ && globalThis.__FLUXPLUGIN_SHARED__[\"fluxplugin\"];\nif (!m) throw new Error(\"Shared module fluxplugin is not provided by the host application (see installSharedModules).\");\nmodule.exports = m;", "import { definePlugin } from \"fluxplugin\";\n\nexport default definePlugin({\n  onActivate(ctx) {\n    ctx.logger.info(\"Hello (main) activated\");\n  },\n});\n"],
+  "mappings": ";;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;AAAA;AAAA;AAAA,QAAM,IAAI,WAAW,yBAAyB,WAAW,sBAAsB,YAAY;AAC3F,QAAI,CAAC,EAAG,OAAM,IAAI,MAAM,8FAA8F;AACtH,WAAO,UAAU;AAAA;AAAA;;;ACFjB,wBAA6B;AAE7B,IAAO,mBAAQ,gCAAa;AAAA,EAC1B,WAAW,KAAK;AACd,QAAI,OAAO,KAAK,wBAAwB;AAAA,EAC1C;AACF,CAAC;",
+  "names": []
+}

@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["../src/styles/index.css"],
+  "sourcesContent": ["/* Styles are loaded when the plugin activates and removed when it is disabled. */\n.hello-card {\n  border: 1px solid var(--flux-border, #e2e8f0);\n  border-radius: 12px;\n  padding: 16px;\n}\n"],
+  "mappings": ";AACA,CAAC;AACC,UAAQ,IAAI,MAAM,IAAI,aAAa,EAAE;AACrC,iBAAe;AACf,WAAS;AACX;",
+  "names": []
+}

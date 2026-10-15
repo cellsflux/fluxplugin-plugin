@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["../src/styles/index.css"],
+  "sourcesContent": [".st-card{border:1px solid var(--flux-border);border-radius:12px;padding:16px;background:var(--flux-surface)}\n.st-btn{background:var(--flux-ok);color:#fff;border:0;border-radius:8px;padding:6px 12px;cursor:pointer}\n"],
+  "mappings": ";AAAA,CAAC;AAAQ,UAAO,IAAI,MAAM,IAAI;AAAe,iBAAc;AAAK,WAAQ;AAAK,cAAW,IAAI;AAAe;AAC3G,CAAC;AAAO,cAAW,IAAI;AAAW,SAAM;AAAK,UAAO;AAAE,iBAAc;AAAI,WAAQ,IAAI;AAAK,UAAO;AAAO;",
+  "names": []
+}

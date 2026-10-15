@@ -1,0 +1,30 @@
+{
+  "id": "com.example.hello",
+  "name": "Hello",
+  "version": "1.0.0",
+  "description": "Hello plugin",
+  "author": "Your name",
+  "license": "MIT",
+  "repository": "https://github.com/YOUR_NAME/${v.slug}",
+  "icon": "./assets/icon.svg",
+  "readme": "./README.md",
+  "categories": ["Productivity"],
+  "keywords": ["${v.slug}"],
+  "links": {},
+  "main": "./dist/main.mjs",
+  "renderer": "./dist/renderer.js",
+  "styles": ["./dist/index.css"],
+  "activationEvents": ["onStartup"],
+  "permissions": [
+    "commands",
+    "routes",
+    "menus",
+    "ui",
+    "styles",
+    "notifications"
+  ],
+  "engines": {
+    "fluxplugin": "^1.0.0"
+  },
+  "contributes": {}
+}

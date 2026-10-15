@@ -1,0 +1,7 @@
+/* plugins/hello/src/styles/index.css */
+.hello-card {
+  border: 1px solid var(--flux-border, #e2e8f0);
+  border-radius: 12px;
+  padding: 16px;
+}
+/*# sourceMappingURL=index.css.map */
