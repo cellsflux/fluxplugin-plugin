@@ -1,0 +1,11 @@
+/* Utilities only: the host owns the preflight/reset. Colors follow the host theme. */
+@import "tailwindcss/theme.css" layer(theme);
+@import "tailwindcss/utilities.css" layer(utilities);
+
+@theme inline {
+  --color-surface: var(--flux-surface);
+  --color-border: var(--flux-border);
+  --color-accent: var(--flux-accent);
+  --color-muted: var(--flux-muted);
+  --color-fg: var(--flux-fg);
+}

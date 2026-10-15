@@ -1,0 +1,6 @@
+/* Styles are loaded when the plugin activates and removed when it is disabled. */
+.osui-card {
+  border: 1px solid var(--flux-border, #e2e8f0);
+  border-radius: 12px;
+  padding: 16px;
+}

@@ -140,55 +140,6 @@
       "readme": "# Stats Service\n\nMain + renderer plugin: validated IPC, preload API, pushed events and a typed config.\n\n## What you get\n\n- A **main-process** service answering validated IPC calls (`stats.get`, `stats.addStudent`)\n- A **preload API** exposed as `window.plugins.stats`\n- A live **push** (`stats.updated`) every few seconds, with a configurable interval\n- A typed, persisted **configuration** (see *Settings*)\n\n## How to use it\n\n1. Open **Plugins** and make sure *Stats Service* is enabled.\n2. Look for its entries in the sidebar, the menu bar and the dashboard.\n3. Open the plugin's page in **Plugins → Details** to change its settings and read its logs.\n\n## Permissions\n\n| Permission | Why |\n| --- | --- |\n| `ipc` | handlers and push events |\n| `services` | the `stats.service` other plugins can use |\n| `storage` | persisting its settings |\n\n## Good to know\n\n> Plugins are shipped as built JavaScript only. Source code never leaves the author's machine.\n\nDocumentation: [fluxplugin on npm](https://www.npmjs.com/package/fluxplugin)\n"
     },
     {
-      "id": "com.cellsflux.calendar-pro",
-      "name": "Calendar Pro",
-      "version": "1.0.0",
-      "description": "Un calendrier interactif React pour Fluxplugin, permettant de consulter les dates et d'ajouter des événements.",
-      "author": "Cellsflux",
-      "permissions": [
-        "commands",
-        "routes",
-        "menus",
-        "ui",
-        "styles",
-        "events"
-      ],
-      "folder": "plugins/calendar-pro/",
-      "files": [
-        "README.md",
-        "assets/icon.svg",
-        "dist/index.css",
-        "dist/main.mjs",
-        "dist/renderer.css",
-        "dist/renderer.js",
-        "plugin.json"
-      ],
-      "hashes": {
-        "README.md": "20b8d82bce087f060aaed60a46481117701a4892e9648236aa54e3a0681a4e32",
-        "assets/icon.svg": "8cb7d2cfd4787c3163601634a1a3555104c1afc37065067a4e81f25f76abe5ef",
-        "dist/index.css": "f5ac94f9b2f4723b4c5b471f5fd698c1bfa9428aad1e660985459c06b4b447c9",
-        "dist/main.mjs": "f9dc208cc192e6c9185e6572de9cb5820da581be6519803123cbf3f5dd68c9c1",
-        "dist/renderer.css": "f5ac94f9b2f4723b4c5b471f5fd698c1bfa9428aad1e660985459c06b4b447c9",
-        "dist/renderer.js": "9abf2cb48d3d0202ae517d978b97d9e7dbcd08dcc57dcb334e3470f8cfd8099d",
-        "plugin.json": "940add0d095f9e1cee7981dd25b231e7d8c5bce13e7825a8b9ae925b19eeb16d"
-      },
-      "license": "MIT",
-      "icon": "plugins/calendar-pro/assets/icon.svg",
-      "screenshots": [],
-      "categories": [
-        "Productivity"
-      ],
-      "keywords": [
-        "calendar",
-        "react",
-        "events",
-        "fullcalendar",
-        "demo"
-      ],
-      "links": {},
-      "readme": "# Calendar Pro\n\nOne or two sentences that say what this plugin does and who it is for.\n\n## What you get\n\n- A **page** at `/calendar_pro` in the sidebar\n- A **widget** on the dashboard\n- A **command** you can run from the command palette (Ctrl/Cmd+K)\n\n## How to use it\n\n1. Enable the plugin in **Plugins**.\n2. Open **Calendar Pro** in the sidebar.\n3. Configure it in the plugin's *Settings* section.\n\n## Permissions\n\n| Permission | Why |\n| --- | --- |\n| `routes`, `menus` | adds its page and sidebar entry |\n| `ui` | adds a dashboard widget |\n| `commands` | registers its commands |\n\n## Video & screenshots\n\nAdd them in `plugin.json` and they appear on this page:\n\n```json\n\"video\": \"https://www.youtube.com/watch?v=YOUR_VIDEO_ID\",\n\"banner\": \"./assets/banner.png\",\n\"screenshots\": [\"./assets/shot-1.png\", \"./assets/shot-2.png\"],\n\"links\": { \"docs\": \"https://example.com/docs\", \"support\": \"https://example.com/support\" }\n```\n\n## Changelog\n\n- **1.0.0** — first release\n"
-    },
-    {
       "id": "com.example.dashboard",
       "name": "Dashboard Widgets",
       "version": "1.0.0",
@@ -327,6 +278,53 @@
       ],
       "links": {},
       "readme": "# Language\n\nChoose the language of the whole interface: menus, search, notifications, settings and the plugin manager.\n\n## Languages included\n\n| Language | Code |\n| --- | --- |\n| English | `en` |\n| Français | `fr` |\n| Español | `es` |\n| Deutsch | `de` |\n\nOpen **Settings → Language** and pick one. The change is instant and remembered.\n\n## Add your own language\n\n1. Copy `src/messages.ts` and translate the values.\n2. Add the language to the list in `src/renderer.tsx`.\n3. Build with `fluxplugin build`.\n\n> [!NOTE]\n> Any plugin can ship translations — the app merges them. Missing words fall back to English, so a partial translation is fine.\n\n## Right-to-left languages\n\nSet `rtl: true` on a language (Arabic, Hebrew…) and the whole interface mirrors automatically.\n"
+    },
+    {
+      "id": "com.cellsflux.osui",
+      "name": "Osui",
+      "version": "1.0.0",
+      "description": "Osui plugin",
+      "author": "Your name",
+      "permissions": [
+        "commands",
+        "routes",
+        "menus",
+        "ui",
+        "styles",
+        "notifications"
+      ],
+      "folder": "plugins/osui/",
+      "files": [
+        "README.md",
+        "assets/icon.svg",
+        "dist/index.css",
+        "dist/main.mjs",
+        "dist/renderer.js",
+        "dist/tailwind.css",
+        "plugin.json"
+      ],
+      "hashes": {
+        "README.md": "3f51eec841ef2f7fde060e9e8ecbadab9ec6bdda2b820e4818b7589d57ea984b",
+        "assets/icon.svg": "5e1853a2aec00f3d69e8a72a06eb320bd30da0616813a04de92b0af4a5432f66",
+        "dist/index.css": "65c952bfac71607dbb7bd138c4f6b88ec38a4399c1f3f0d14f9b02900da2606d",
+        "dist/main.mjs": "f17d90498bcacad8a9f456027fe41ed47c4d929db9f2b3eb71c2b8027b5d83d8",
+        "dist/renderer.js": "829027ccb67cbfc84df1180967acd985e160f0a3031193840cac4184c318b7de",
+        "dist/tailwind.css": "109abc5f7e68b5270751d41c979ed2a4826c7be7ea220c881a1e086bfaed4fe7",
+        "plugin.json": "8bb89b9f23ca0877864159da6e51163c25dfaba4429b2a8af7cb884f07f3f0d9"
+      },
+      "license": "MIT",
+      "icon": "plugins/osui/assets/icon.svg",
+      "screenshots": [],
+      "categories": [
+        "Productivity"
+      ],
+      "keywords": [
+        "ui",
+        "fluxplugin",
+        "ios"
+      ],
+      "links": {},
+      "readme": "# Osui\n\nOne or two sentences that say what this plugin does and who it is for.\n\n## What you get\n\n- A **page** at `/osui` in the sidebar\n- A **widget** on the dashboard\n- A **command** you can run from the command palette (Ctrl/Cmd+K)\n\n## How to use it\n\n1. Enable the plugin in **Plugins**.\n2. Open **Osui** in the sidebar.\n3. Configure it in the plugin's *Settings* section.\n\n## Permissions\n\n| Permission | Why |\n| --- | --- |\n| `routes`, `menus` | adds its page and sidebar entry |\n| `ui` | adds a dashboard widget |\n| `commands` | registers its commands |\n\n## Video & screenshots\n\nAdd them in `plugin.json` and they appear on this page:\n\n```json\n\"video\": \"https://www.youtube.com/watch?v=YOUR_VIDEO_ID\",\n\"banner\": \"./assets/banner.png\",\n\"screenshots\": [\"./assets/shot-1.png\", \"./assets/shot-2.png\"],\n\"links\": { \"docs\": \"https://example.com/docs\", \"support\": \"https://example.com/support\" }\n```\n\n## Changelog\n\n- **1.0.0** — first release\n"
     }
   ]
 }

@@ -1,4 +1,4 @@
-# Developing Calendar Pro
+# Developing Osui
 
 This is a normal React + TypeScript project. It has its own `package.json` and its own libraries.
 
@@ -8,7 +8,7 @@ npm install chart.js              # add anything you need: it is bundled into di
 npm run dev                       # rebuilds on save
 npm run dev:host                  # same, and copies the result into a host app (edit the path) which hot-reloads it
 npm run build                     # dist/ — this is all that ships (no src/, no .ts, no sourcemaps)
-npm run package                   # com.example.calendar-pro-1.0.0.tgz
+npm run package                   # com.example.osui-1.0.0.tgz
 npm run release                   # publish to the plugin store (GitHub)
 ```
 

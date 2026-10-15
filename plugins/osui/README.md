@@ -1,17 +1,17 @@
-# Calendar Pro
+# Osui
 
 One or two sentences that say what this plugin does and who it is for.
 
 ## What you get
 
-- A **page** at `/calendar_pro` in the sidebar
+- A **page** at `/osui` in the sidebar
 - A **widget** on the dashboard
 - A **command** you can run from the command palette (Ctrl/Cmd+K)
 
 ## How to use it
 
 1. Enable the plugin in **Plugins**.
-2. Open **Calendar Pro** in the sidebar.
+2. Open **Osui** in the sidebar.
 3. Configure it in the plugin's *Settings* section.
 
 ## Permissions

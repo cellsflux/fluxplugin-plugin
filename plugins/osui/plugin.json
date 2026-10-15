@@ -1,0 +1,30 @@
+{
+  "id": "com.cellsflux.osui",
+  "name": "Osui",
+  "version": "1.0.0",
+  "description": "Osui plugin",
+  "author": "Your name",
+  "license": "MIT",
+  "repository": "https://github.com/cellsflux/fluxplugin-plugin",
+  "icon": "./assets/icon.svg",
+  "readme": "./README.md",
+  "categories": ["Productivity"],
+  "keywords": ["ui", "fluxplugin", "ios"],
+  "links": {},
+  "main": "./dist/main.mjs",
+  "renderer": "./dist/renderer.js",
+  "styles": ["./dist/index.css", "./dist/tailwind.css"],
+  "activationEvents": ["onStartup"],
+  "permissions": [
+    "commands",
+    "routes",
+    "menus",
+    "ui",
+    "styles",
+    "notifications"
+  ],
+  "engines": {
+    "fluxplugin": "^1.0.0"
+  },
+  "contributes": {}
+}
