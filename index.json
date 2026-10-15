@@ -38,8 +38,14 @@
       "icon": "plugins/advanced-plugin/assets/icon.svg",
       "screenshots": [],
       "video": "https://youtu.be/dQw4w9WgXcQ",
-      "categories": ["Workflow"],
-      "keywords": ["hooks", "guards", "layout"],
+      "categories": [
+        "Workflow"
+      ],
+      "keywords": [
+        "hooks",
+        "guards",
+        "layout"
+      ],
       "links": {
         "docs": "https://www.npmjs.com/package/fluxplugin"
       },
@@ -51,7 +57,9 @@
       "version": "1.0.0",
       "description": "Themes, accent colors, fonts, text size, density and more — everything about how the app looks.",
       "author": "fluxplugin",
-      "permissions": ["ui"],
+      "permissions": [
+        "ui"
+      ],
       "folder": "plugins/appearance/",
       "files": [
         "README.md",
@@ -68,8 +76,15 @@
       "license": "MIT",
       "icon": "plugins/appearance/assets/icon.svg",
       "screenshots": [],
-      "categories": ["Personalization"],
-      "keywords": ["theme", "font", "accent", "dark mode"],
+      "categories": [
+        "Personalization"
+      ],
+      "keywords": [
+        "theme",
+        "font",
+        "accent",
+        "dark mode"
+      ],
       "links": {},
       "readme": "# Appearance\n\nMake the app yours. This plugin adds an **Appearance** page to *Settings* and four extra themes.\n\n## What you can change\n\n- **Mode** — System, Light or Dark.\n- **Theme** — Midnight, Sunset, Forest or high-contrast Graphite.\n- **Accent color** — seven colors, or the theme's own.\n- **Text** — font family, any font installed on your computer, size and line spacing.\n- **Layout** — compact or comfortable spacing, corner roundness, translucency and reduced motion.\n\n> [!TIP]\n> Type the name of any font installed on your computer in *Your own font*. If it is missing, the next font in the list is used.\n\n## How it works\n\n| Setting | Stored as |\n| --- | --- |\n| Theme and mode | the app's theme variables |\n| Fonts, size, spacing | CSS variables on the page |\n\nYour choices are saved on this device and apply to every plugin, because plugins use the same variables.\n\n## For developers\n\nPlugins can add their own **themes** and **fonts** to the same lists — see the `theme` and `font` extension points in the documentation.\n"
     },
@@ -110,8 +125,15 @@
       "license": "MIT",
       "icon": "plugins/backend-plugin/assets/icon.svg",
       "screenshots": [],
-      "categories": ["Data", "Developer tools"],
-      "keywords": ["ipc", "main-process", "stats"],
+      "categories": [
+        "Data",
+        "Developer tools"
+      ],
+      "keywords": [
+        "ipc",
+        "main-process",
+        "stats"
+      ],
       "links": {
         "docs": "https://www.npmjs.com/package/fluxplugin"
       },
@@ -123,7 +145,13 @@
       "version": "1.0.0",
       "description": "Renderer-only plugin: a lazy route, a dashboard widget, a toolbar action and scoped styles.",
       "author": "fluxplugin examples",
-      "permissions": ["routes", "menus", "ui", "commands", "styles"],
+      "permissions": [
+        "routes",
+        "menus",
+        "ui",
+        "commands",
+        "styles"
+      ],
       "folder": "plugins/dashboard-plugin/",
       "files": [
         "README.md",
@@ -155,8 +183,15 @@
         "plugins/dashboard-plugin/assets/3.webp"
       ],
       "video": "https://www.w3schools.com/html/mov_bbb.mp4",
-      "categories": ["Productivity", "UI"],
-      "keywords": ["dashboard", "widget", "toolbar"],
+      "categories": [
+        "Productivity",
+        "UI"
+      ],
+      "keywords": [
+        "dashboard",
+        "widget",
+        "toolbar"
+      ],
       "links": {
         "docs": "https://www.npmjs.com/package/fluxplugin"
       },
@@ -196,8 +231,12 @@
       "license": "MIT",
       "icon": "plugins/hello/assets/icon.svg",
       "screenshots": [],
-      "categories": ["Productivity"],
-      "keywords": ["${v.slug}"],
+      "categories": [
+        "Productivity"
+      ],
+      "keywords": [
+        "${v.slug}"
+      ],
       "links": {},
       "readme": "# Hello\n\nOne or two sentences that say what this plugin does and who it is for.\n\n## What you get\n\n- A **page** at `/hello` in the sidebar\n- A **widget** on the dashboard\n- A **command** you can run from the command palette (Ctrl/Cmd+K)\n\n## How to use it\n\n1. Enable the plugin in **Plugins**.\n2. Open **Hello** in the sidebar.\n3. Configure it in the plugin's *Settings* section.\n\n## Permissions\n\n| Permission | Why |\n| --- | --- |\n| `routes`, `menus` | adds its page and sidebar entry |\n| `ui` | adds a dashboard widget |\n| `commands` | registers its commands |\n\n## Video & screenshots\n\nAdd them in `plugin.json` and they appear on this page:\n\n```json\n\"video\": \"https://www.youtube.com/watch?v=YOUR_VIDEO_ID\",\n\"banner\": \"./assets/banner.png\",\n\"screenshots\": [\"./assets/shot-1.png\", \"./assets/shot-2.png\"],\n\"links\": { \"docs\": \"https://example.com/docs\", \"support\": \"https://example.com/support\" }\n```\n\n## Changelog\n\n- **1.0.0** — first release\n"
     },
@@ -207,7 +246,9 @@
       "version": "1.0.0",
       "description": "Use the app in English, French, Spanish or German — and add your own language.",
       "author": "fluxplugin",
-      "permissions": ["ui"],
+      "permissions": [
+        "ui"
+      ],
       "folder": "plugins/language/",
       "files": [
         "README.md",
@@ -224,7 +265,9 @@
       "license": "MIT",
       "icon": "plugins/language/assets/icon.svg",
       "screenshots": [],
-      "categories": ["Personalization"],
+      "categories": [
+        "Personalization"
+      ],
       "keywords": [
         "language",
         "translation",
@@ -267,15 +310,21 @@
         "dist/index.css": "65c952bfac71607dbb7bd138c4f6b88ec38a4399c1f3f0d14f9b02900da2606d",
         "dist/main.mjs": "f17d90498bcacad8a9f456027fe41ed47c4d929db9f2b3eb71c2b8027b5d83d8",
         "dist/renderer.css": "e829262c212fd58d5cd70629ba9b67060e6fc0d5d30ce69484a0f69df7217f66",
-        "dist/renderer.js": "754b648ff3ebb23a2ed99777add14e9ecdd3049b0d9bca6f1145a9035178cd61",
-        "dist/tailwind.css": "50aab83bd0b9df88aa4293705bb20bf27cab630dee66c3a9a513e06fca0cf087",
+        "dist/renderer.js": "e8720c37377b4d84265dcc0c86b74654b87439e338fa8845ecf588fe7e75527d",
+        "dist/tailwind.css": "2b886033b78a271c74b84101affc80a25b6ef50896be0d69fc434dfe40d0d73f",
         "plugin.json": "14f5d1222aaad456c39c4cb707bcd84104cd3c3d650a4d8849f03b71c4687c3d"
       },
       "license": "MIT",
       "icon": "plugins/osui/assets/icon.svg",
       "screenshots": [],
-      "categories": ["Productivity"],
-      "keywords": ["ui", "fluxplugin", "ios"],
+      "categories": [
+        "Productivity"
+      ],
+      "keywords": [
+        "ui",
+        "fluxplugin",
+        "ios"
+      ],
       "links": {},
       "readme": "# Osui\n\nOne or two sentences that say what this plugin does and who it is for.\n\n## What you get\n\n- A **page** at `/osui` in the sidebar\n- A **widget** on the dashboard\n- A **command** you can run from the command palette (Ctrl/Cmd+K)\n\n## How to use it\n\n1. Enable the plugin in **Plugins**.\n2. Open **Osui** in the sidebar.\n3. Configure it in the plugin's *Settings* section.\n\n## Permissions\n\n| Permission | Why |\n| --- | --- |\n| `routes`, `menus` | adds its page and sidebar entry |\n| `ui` | adds a dashboard widget |\n| `commands` | registers its commands |\n\n## Video & screenshots\n\nAdd them in `plugin.json` and they appear on this page:\n\n```json\n\"video\": \"https://www.youtube.com/watch?v=YOUR_VIDEO_ID\",\n\"banner\": \"./assets/banner.png\",\n\"screenshots\": [\"./assets/shot-1.png\", \"./assets/shot-2.png\"],\n\"links\": { \"docs\": \"https://example.com/docs\", \"support\": \"https://example.com/support\" }\n```\n\n## Changelog\n\n- **1.0.0** — first release\n"
     }
