@@ -2,7 +2,7 @@
 **/node_modules/
 
 # Dossiers de build et de distribution
-**/dist/
+
 **/build/
 **/out/
 **/.next/
