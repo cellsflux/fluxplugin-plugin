@@ -221,24 +221,9 @@ var LINKS = [
   ["dubai", "kinshasa"]
 ];
 var SEV = {
-  critical: {
-    label: "Critique",
-    badge: "bg-red-500/15 text-red-600 dark:text-red-400 border-red-500/40",
-    bar: "bg-red-500/70",
-    color: "#ef4444"
-  },
-  high: {
-    label: "\xC9lev\xE9",
-    badge: "bg-amber-500/15 text-amber-600 dark:text-amber-400 border-amber-500/40",
-    bar: "bg-amber-500/70",
-    color: "#f59e0b"
-  },
-  normal: {
-    label: "Normal",
-    badge: "bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border-emerald-500/40",
-    bar: "bg-primary/60",
-    color: "#10b981"
-  }
+  critical: { label: "Critique", color: "#ef4444" },
+  high: { label: "\xC9lev\xE9", color: "#f59e0b" },
+  normal: { label: "Normal", color: "#10b981" }
 };
 var needsFor = (i) => [
   {
@@ -257,24 +242,151 @@ var needsFor = (i) => [
     hub: "Entrep\xF4t central"
   }
 ];
-var PANEL = "bg-white/90 dark:bg-darkbg/90 backdrop-blur-md border border-gray-200 dark:border-primary/30 rounded-xl shadow-lg";
-var BOX = "rounded-lg border border-gray-200 dark:border-primary/20 bg-gray-50 dark:bg-white/5";
-var SOFT = "text-gray-500 dark:text-gray-400";
-var LABEL = "text-[10px] uppercase tracking-wider text-gray-500 dark:text-gray-400";
-var BTN_PRIMARY = "bg-primary text-white hover:bg-primary/90 rounded-lg font-medium transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 disabled:opacity-50";
-var BTN_GHOST = "bg-white/80 dark:bg-white/10 text-gray-700 dark:text-gray-200 border border-gray-200 dark:border-primary/30 hover:bg-gray-100 dark:hover:bg-white/20 rounded-lg font-medium transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/50";
-var BTN_DANGER = "bg-transparent text-red-600 dark:text-red-400 border border-red-500/50 hover:bg-red-500/10 rounded-lg font-medium transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500/40";
-function useIsDark() {
-  const get = () => typeof document !== "undefined" && document.documentElement.classList.contains("dark");
-  const [dark, setDark] = (0, import_react.useState)(get);
+var THEME = {
+  dark: {
+    text: "text-slate-100",
+    soft: "text-slate-400",
+    label: "text-[10px] uppercase tracking-wider text-slate-400",
+    card: "bg-slate-900 border-slate-700",
+    panel: "bg-slate-900/95 border-slate-600 shadow-xl backdrop-blur-md",
+    box: "bg-slate-800 border-slate-700",
+    divider: "border-slate-700",
+    stage: "from-slate-950 to-slate-900",
+    tabOn: "text-sky-300 border-sky-400",
+    tabOff: "text-slate-400 border-transparent hover:text-slate-100",
+    itemOn: "border-sky-400 bg-sky-400/10",
+    itemOff: "border-slate-700 hover:bg-slate-800",
+    btnPrimary: "bg-sky-500 text-slate-950 hover:bg-sky-400",
+    btnGhost: "bg-slate-800 text-slate-100 border border-slate-600 hover:bg-slate-700",
+    btnDanger: "text-red-300 border border-red-400/60 hover:bg-red-500/15",
+    track: "bg-slate-800",
+    warn: "border-amber-400/50 bg-amber-400/10 text-amber-200",
+    switchOff: "bg-slate-600",
+    accentBg: "bg-sky-400",
+    chip: "bg-sky-500 text-slate-950",
+    ring: "ring-sky-400",
+    now: "bg-sky-400",
+    okText: "text-emerald-400",
+    close: "text-slate-400 hover:text-white",
+    badge: {
+      critical: "bg-red-500/20 text-red-300 border-red-400/50",
+      high: "bg-amber-500/20 text-amber-300 border-amber-400/50",
+      normal: "bg-emerald-500/20 text-emerald-300 border-emerald-400/50"
+    },
+    bar: { critical: "bg-red-500", high: "bg-amber-500", normal: "bg-sky-500" },
+    feed: {
+      warn: "text-amber-300",
+      ok: "text-emerald-300",
+      bad: "text-red-300",
+      info: "text-slate-200"
+    },
+    decision: {
+      "En attente": "text-slate-400",
+      Approuv\u00E9: "text-emerald-300",
+      Rejet\u00E9: "text-red-300"
+    }
+  },
+  light: {
+    text: "text-slate-900",
+    soft: "text-slate-600",
+    label: "text-[10px] uppercase tracking-wider text-slate-600",
+    card: "bg-white border-slate-300",
+    panel: "bg-white/95 border-slate-300 shadow-xl backdrop-blur-md",
+    box: "bg-slate-100 border-slate-200",
+    divider: "border-slate-200",
+    stage: "from-slate-100 to-slate-200",
+    tabOn: "text-indigo-700 border-indigo-600",
+    tabOff: "text-slate-600 border-transparent hover:text-slate-900",
+    itemOn: "border-indigo-600 bg-indigo-50",
+    itemOff: "border-slate-300 hover:bg-slate-100",
+    btnPrimary: "bg-indigo-600 text-white hover:bg-indigo-500",
+    btnGhost: "bg-white text-slate-800 border border-slate-300 hover:bg-slate-100",
+    btnDanger: "text-red-700 border border-red-400 hover:bg-red-50",
+    track: "bg-slate-200",
+    warn: "border-amber-400 bg-amber-50 text-amber-800",
+    switchOff: "bg-slate-300",
+    accentBg: "bg-indigo-600",
+    chip: "bg-indigo-600 text-white",
+    ring: "ring-indigo-600",
+    now: "bg-indigo-600",
+    okText: "text-emerald-700",
+    close: "text-slate-500 hover:text-slate-900",
+    badge: {
+      critical: "bg-red-100 text-red-700 border-red-300",
+      high: "bg-amber-100 text-amber-800 border-amber-300",
+      normal: "bg-emerald-100 text-emerald-800 border-emerald-300"
+    },
+    bar: {
+      critical: "bg-red-500",
+      high: "bg-amber-500",
+      normal: "bg-indigo-500"
+    },
+    feed: {
+      warn: "text-amber-700",
+      ok: "text-emerald-700",
+      bad: "text-red-700",
+      info: "text-slate-800"
+    },
+    decision: {
+      "En attente": "text-slate-600",
+      Approuv\u00E9: "text-emerald-700",
+      Rejet\u00E9: "text-red-700"
+    }
+  }
+};
+var BTN_BASE = "rounded-lg font-medium transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-400/60 disabled:opacity-50";
+var probe = /* @__PURE__ */ (() => {
+  let ctx = null;
+  return (color) => {
+    if (!ctx)
+      ctx = document.createElement("canvas").getContext("2d", { willReadFrequently: true });
+    if (!ctx) return null;
+    ctx.clearRect(0, 0, 1, 1);
+    ctx.fillStyle = "#000";
+    ctx.fillStyle = color;
+    ctx.fillRect(0, 0, 1, 1);
+    const d = ctx.getImageData(0, 0, 1, 1).data;
+    return [d[0], d[1], d[2], d[3] / 255];
+  };
+})();
+var detectDark = (start) => {
+  let n = start ?? document.body;
+  while (n) {
+    const px = probe(getComputedStyle(n).backgroundColor);
+    if (px && px[3] > 0.6) {
+      const lum = (0.2126 * px[0] + 0.7152 * px[1] + 0.0722 * px[2]) / 255;
+      return lum < 0.5;
+    }
+    n = n.parentElement;
+  }
+  const root = document.documentElement;
+  const hint = `${root.className} ${root.getAttribute("data-theme") ?? ""} ${root.getAttribute("data-mode") ?? ""}`.toLowerCase();
+  if (/\bdark\b/.test(hint)) return true;
+  if (/\blight\b/.test(hint)) return false;
+  const cs = getComputedStyle(root).colorScheme || "";
+  if (cs.includes("dark") && !cs.includes("light")) return true;
+  if (cs === "light") return false;
+  return window.matchMedia("(prefers-color-scheme: dark)").matches;
+};
+function useHostDark(ref) {
+  const [dark, setDark] = (0, import_react.useState)(
+    () => typeof document !== "undefined" ? detectDark(null) : false
+  );
   (0, import_react.useEffect)(() => {
-    const obs = new MutationObserver(() => setDark(get()));
-    obs.observe(document.documentElement, {
-      attributes: true,
-      attributeFilter: ["class"]
-    });
-    return () => obs.disconnect();
-  }, []);
+    const update = () => setDark(detectDark(ref.current?.parentElement ?? null));
+    update();
+    const id = setInterval(update, 500);
+    const mo = new MutationObserver(update);
+    mo.observe(document.documentElement, { attributes: true });
+    mo.observe(document.body, { attributes: true });
+    const mq = window.matchMedia("(prefers-color-scheme: dark)");
+    mq.addEventListener("change", update);
+    return () => {
+      clearInterval(id);
+      mo.disconnect();
+      mq.removeEventListener("change", update);
+    };
+  }, [ref]);
   return dark;
 }
 var D = Math.PI / 180;
@@ -380,12 +492,12 @@ var PAL = {
   light: {
     sphereA: "#f8fafc",
     sphereB: "#c3d0e4",
-    rim: "rgba(37,99,235,0.8)",
-    glow: "37,99,235",
-    grid: "rgba(37,99,235,0.10)",
+    rim: "rgba(79,70,229,0.85)",
+    glow: "79,70,229",
+    grid: "rgba(79,70,229,0.12)",
     land: "51,65,85",
-    arc: "37,99,235",
-    pulse: "#1d4ed8",
+    arc: "79,70,229",
+    pulse: "#4338ca",
     text: "#1e293b",
     halo: "rgba(255,255,255,0.9)"
   }
@@ -407,6 +519,7 @@ var GlobeCanvas = ({
   const hits = (0, import_react.useRef)([]);
   const live = (0, import_react.useRef)({ nodes, selectedId, layers, auto, dark });
   live.current = { nodes, selectedId, layers, auto, dark };
+  const T = THEME[dark ? "dark" : "light"];
   const [readout, setReadout] = (0, import_react.useState)({ lon: 15, lat: 15, zoom: 1 });
   (0, import_react.useEffect)(() => {
     if (!selectedId) return;
@@ -751,18 +864,18 @@ var GlobeCanvas = ({
     /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(
       "div",
       {
-        className: `absolute bottom-3 left-1/2 -translate-x-1/2 flex items-center gap-2 px-2 py-1.5 ${PANEL}`,
+        className: `absolute bottom-3 left-1/2 -translate-x-1/2 flex items-center gap-2 px-2 py-1.5 border rounded-xl ${T.panel} ${T.text}`,
         children: [
           /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
             "button",
             {
               onClick: () => zoomBy(1 / 1.2),
               "aria-label": "Zoom arri\xE8re",
-              className: `${BTN_GHOST} w-8 h-8`,
+              className: `${BTN_BASE} ${T.btnGhost} w-8 h-8`,
               children: "\u2212"
             }
           ),
-          /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", { className: "font-mono text-[11px] text-gray-600 dark:text-gray-300 px-1 whitespace-nowrap", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", { className: "font-mono text-[11px] px-1 whitespace-nowrap", children: [
             "LAT ",
             readout.lat.toFixed(1),
             "\xB0 \xB7 LON ",
@@ -777,7 +890,7 @@ var GlobeCanvas = ({
             {
               onClick: () => zoomBy(1.2),
               "aria-label": "Zoom avant",
-              className: `${BTN_GHOST} w-8 h-8`,
+              className: `${BTN_BASE} ${T.btnGhost} w-8 h-8`,
               children: "+"
             }
           ),
@@ -787,7 +900,7 @@ var GlobeCanvas = ({
               onClick: resetView,
               "aria-label": "R\xE9initialiser la vue",
               title: "R\xE9initialiser",
-              className: `${BTN_GHOST} w-8 h-8`,
+              className: `${BTN_BASE} ${T.btnGhost} w-8 h-8`,
               children: "\u27F2"
             }
           )
@@ -797,22 +910,12 @@ var GlobeCanvas = ({
   ] });
 };
 var TABS = ["Tout", "Surveillance", "Op\xE9rations", "Logistique"];
-var FEED_TONE = {
-  warn: "text-amber-600 dark:text-amber-400",
-  ok: "text-emerald-600 dark:text-emerald-400",
-  bad: "text-red-600 dark:text-red-400",
-  info: "text-gray-700 dark:text-gray-200"
-};
-var DECISION_STYLE = {
-  "En attente": "text-gray-500 dark:text-gray-400",
-  Approuv\u00E9: "text-emerald-600 dark:text-emerald-400",
-  Rejet\u00E9: "text-red-600 dark:text-red-400"
-};
 var utc = (d) => d.toISOString().slice(11, 19);
 var Switch = ({
   on,
   onChange,
-  label
+  label,
+  T
 }) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
   "button",
   {
@@ -820,7 +923,7 @@ var Switch = ({
     "aria-checked": on,
     "aria-label": label,
     onClick: () => onChange(!on),
-    className: `relative w-10 h-5 rounded-full transition-colors shrink-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 ${on ? "bg-primary" : "bg-gray-300 dark:bg-white/20"}`,
+    className: `relative w-10 h-5 rounded-full transition-colors shrink-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-400/60 ${on ? T.accentBg : T.switchOff}`,
     children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
       "span",
       {
@@ -829,8 +932,13 @@ var Switch = ({
     )
   }
 );
-var Globe = () => {
-  const dark = useIsDark();
+var Globe = ({
+  theme = "auto"
+}) => {
+  const rootRef = (0, import_react.useRef)(null);
+  const hostDark = useHostDark(rootRef);
+  const dark = theme === "auto" ? hostDark : theme === "dark";
+  const T = THEME[dark ? "dark" : "light"];
   const [tab, setTab] = (0, import_react.useState)("Tout");
   const [leftTab, setLeftTab] = (0, import_react.useState)("situation");
   const [selected, setSelected] = (0, import_react.useState)(null);
@@ -895,242 +1003,298 @@ var Globe = () => {
     const r = el.getBoundingClientRect();
     setNow(clamp((e.clientX - r.left) / r.width * 12, 0, 12));
   };
-  const renderLeft = (cls) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("aside", { className: `${cls} ${PANEL} flex-col overflow-hidden`, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: "flex border-b border-gray-200 dark:border-primary/20", children: ["situation", "couches"].map((k) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
-      "button",
-      {
-        onClick: () => setLeftTab(k),
-        className: `flex-1 px-3 py-2.5 text-xs font-semibold uppercase tracking-wider border-b-2 transition-colors ${leftTab === k ? "text-primary border-primary" : "text-gray-500 dark:text-gray-400 border-transparent hover:text-gray-800 dark:hover:text-gray-200"}`,
-        children: k === "situation" ? "Situation" : "Couches"
-      },
-      k
-    )) }),
-    leftTab === "situation" ? /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { className: "flex-1 min-h-0 overflow-y-auto p-2.5 space-y-2", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", { className: LABEL, children: [
-        visible.length,
-        " \xE9v\xE9nements"
-      ] }),
-      visible.map((i) => {
-        const on = i.id === selected;
-        const dec = decisions[i.id] ?? "En attente";
-        return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(
+  const renderLeft = (cls) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(
+    "aside",
+    {
+      className: `${cls} border rounded-xl ${T.panel} ${T.text} flex-col overflow-hidden`,
+      children: [
+        /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: `flex border-b ${T.divider}`, children: ["situation", "couches"].map((k) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
           "button",
           {
-            onClick: () => setSelected(on ? null : i.id),
-            className: `w-full text-left p-2.5 rounded-lg border transition-colors ${on ? "border-primary bg-primary/10" : "border-gray-200 dark:border-primary/20 hover:bg-gray-100 dark:hover:bg-white/5"}`,
-            children: [
-              /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { className: "flex items-start justify-between gap-2", children: [
-                /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { className: "text-sm font-semibold leading-snug", children: i.title }),
-                /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
-                  "span",
-                  {
-                    className: `shrink-0 px-1.5 py-0.5 text-[10px] font-semibold uppercase rounded border ${SEV[i.severity].badge}`,
-                    children: SEV[i.severity].label
-                  }
-                )
-              ] }),
-              /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(
-                "div",
-                {
-                  className: `mt-1 flex items-center justify-between text-xs ${SOFT}`,
-                  children: [
-                    /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", { className: "flex items-center gap-1.5", children: [
-                      activeAt(i) && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { className: "w-1.5 h-1.5 rounded-full bg-primary animate-pulse" }),
-                      i.place,
-                      " \xB7 ",
-                      i.domain
-                    ] }),
-                    /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { className: DECISION_STYLE[dec], children: dec })
-                  ]
-                }
-              )
-            ]
+            onClick: () => setLeftTab(k),
+            className: `flex-1 px-3 py-2.5 text-xs font-semibold uppercase tracking-wider border-b-2 transition-colors ${leftTab === k ? T.tabOn : T.tabOff}`,
+            children: k === "situation" ? "Situation" : "Couches"
           },
-          i.id
-        );
-      })
-    ] }) : /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { className: "flex-1 min-h-0 overflow-y-auto p-3 space-y-3", children: [
-      [
-        ["arcs", "Liaisons"],
-        ["land", "Continents"],
-        ["grid", "Grille"],
-        ["labels", "\xC9tiquettes"]
-      ].map(([k, label]) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { className: "flex items-center justify-between", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { className: "text-sm", children: label }),
-        /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
-          Switch,
-          {
-            on: layers[k],
-            onChange: (v) => setLayers((l) => ({ ...l, [k]: v })),
-            label
-          }
-        )
-      ] }, k)),
-      /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { className: "flex items-center justify-between", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { className: "text-sm", children: "Rotation automatique" }),
-        /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Switch, { on: auto, onChange: setAuto, label: "Rotation automatique" })
-      ] })
-    ] })
-  ] });
+          k
+        )) }),
+        leftTab === "situation" ? /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { className: "flex-1 min-h-0 overflow-y-auto p-2.5 space-y-2", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", { className: T.label, children: [
+            visible.length,
+            " \xE9v\xE9nements"
+          ] }),
+          visible.map((i) => {
+            const on = i.id === selected;
+            const dec = decisions[i.id] ?? "En attente";
+            return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(
+              "button",
+              {
+                onClick: () => setSelected(on ? null : i.id),
+                className: `w-full text-left p-2.5 rounded-lg border transition-colors ${on ? T.itemOn : T.itemOff}`,
+                children: [
+                  /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { className: "flex items-start justify-between gap-2", children: [
+                    /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { className: "text-sm font-semibold leading-snug", children: i.title }),
+                    /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
+                      "span",
+                      {
+                        className: `shrink-0 px-1.5 py-0.5 text-[10px] font-semibold uppercase rounded border ${T.badge[i.severity]}`,
+                        children: SEV[i.severity].label
+                      }
+                    )
+                  ] }),
+                  /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(
+                    "div",
+                    {
+                      className: `mt-1 flex items-center justify-between text-xs ${T.soft}`,
+                      children: [
+                        /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", { className: "flex items-center gap-1.5", children: [
+                          activeAt(i) && /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
+                            "span",
+                            {
+                              className: `w-1.5 h-1.5 rounded-full animate-pulse ${T.accentBg}`
+                            }
+                          ),
+                          i.place,
+                          " \xB7 ",
+                          i.domain
+                        ] }),
+                        /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { className: T.decision[dec], children: dec })
+                      ]
+                    }
+                  )
+                ]
+              },
+              i.id
+            );
+          })
+        ] }) : /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { className: "flex-1 min-h-0 overflow-y-auto p-3 space-y-3", children: [
+          [
+            ["arcs", "Liaisons"],
+            ["land", "Continents"],
+            ["grid", "Grille"],
+            ["labels", "\xC9tiquettes"]
+          ].map(([k, label]) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { className: "flex items-center justify-between", children: [
+            /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { className: "text-sm", children: label }),
+            /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
+              Switch,
+              {
+                T,
+                on: layers[k],
+                onChange: (v) => setLayers((l) => ({ ...l, [k]: v })),
+                label
+              }
+            )
+          ] }, k)),
+          /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { className: "flex items-center justify-between", children: [
+            /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { className: "text-sm", children: "Rotation automatique" }),
+            /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
+              Switch,
+              {
+                T,
+                on: auto,
+                onChange: setAuto,
+                label: "Rotation automatique"
+              }
+            )
+          ] })
+        ] })
+      ]
+    }
+  );
   const renderRight = (cls) => {
     const dec = current ? decisions[current.id] ?? "En attente" : "En attente";
-    return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("aside", { className: `${cls} ${PANEL} flex-col overflow-hidden`, children: [
-      current ? /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { className: "overflow-y-auto max-h-[62%] p-3 space-y-3 border-b border-gray-200 dark:border-primary/20", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { className: "flex items-start justify-between gap-2", children: [
-          /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [
-            /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { className: "font-bold leading-snug", children: current.title }),
-            /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", { className: `text-xs mt-0.5 ${SOFT}`, children: [
-              "Cr\xE9\xE9 ",
-              current.ago,
-              " \xB7 ",
-              current.owner
-            ] })
+    return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(
+      "aside",
+      {
+        className: `${cls} border rounded-xl ${T.panel} ${T.text} flex-col overflow-hidden`,
+        children: [
+          current ? /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(
+            "div",
+            {
+              className: `overflow-y-auto max-h-[62%] p-3 space-y-3 border-b ${T.divider}`,
+              children: [
+                /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { className: "flex items-start justify-between gap-2", children: [
+                  /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [
+                    /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { className: "font-bold leading-snug", children: current.title }),
+                    /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", { className: `text-xs mt-0.5 ${T.soft}`, children: [
+                      "Cr\xE9\xE9 ",
+                      current.ago,
+                      " \xB7 ",
+                      current.owner
+                    ] })
+                  ] }),
+                  /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
+                    "button",
+                    {
+                      onClick: () => setSelected(null),
+                      "aria-label": "Fermer",
+                      className: `${T.close} px-1`,
+                      children: "\u2715"
+                    }
+                  )
+                ] }),
+                /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { className: "flex items-center gap-2", children: [
+                  /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
+                    "span",
+                    {
+                      className: `px-1.5 py-0.5 text-[10px] font-semibold uppercase rounded border ${T.badge[current.severity]}`,
+                      children: SEV[current.severity].label
+                    }
+                  ),
+                  /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { className: `text-xs font-medium ${T.decision[dec]}`, children: dec })
+                ] }),
+                /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { className: "text-sm", children: current.desc }),
+                /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: "grid grid-cols-3 gap-2 text-center", children: [
+                  ["D\xE9lai", current.eta],
+                  ["Actifs", `${current.assets}\xD7`],
+                  ["\xC9tapes", `${current.steps}\xD7`]
+                ].map(([k, val]) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { className: `rounded-lg border py-2 ${T.box}`, children: [
+                  /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { className: "text-lg font-bold leading-tight", children: val }),
+                  /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { className: T.label, children: k })
+                ] }, k)) }),
+                /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { className: `rounded-lg border p-2.5 space-y-1.5 ${T.box}`, children: [
+                  /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { className: T.label, children: "Besoins" }),
+                  needsFor(current).map((n) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", { className: "text-sm flex items-start gap-2", children: [
+                    /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { className: T.okText, children: "\u2713" }),
+                    /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", { children: [
+                      n.qty,
+                      "\xD7 ",
+                      n.label,
+                      " ",
+                      /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", { className: T.soft, children: [
+                        "\u2014 ",
+                        n.hub
+                      ] })
+                    ] })
+                  ] }, n.label))
+                ] }),
+                current.severity !== "normal" && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: `text-xs px-3 py-2 rounded-lg border ${T.warn}`, children: "\u26A0 Ressources limit\xE9es dans la zone \u2014 validation requise." }),
+                /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { className: "grid grid-cols-2 gap-2", children: [
+                  /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
+                    "button",
+                    {
+                      onClick: () => decide(current, "Approuv\xE9"),
+                      className: `${BTN_BASE} ${T.btnPrimary} py-2 text-sm`,
+                      children: "Approuver"
+                    }
+                  ),
+                  /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
+                    "button",
+                    {
+                      onClick: () => decide(current, "Rejet\xE9"),
+                      className: `${BTN_BASE} ${T.btnDanger} py-2 text-sm`,
+                      children: "Rejeter"
+                    }
+                  )
+                ] })
+              ]
+            }
+          ) : /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { className: `p-3 space-y-3 border-b ${T.divider}`, children: [
+            /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { className: T.label, children: "Vue d'ensemble" }),
+            /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: "grid grid-cols-3 gap-2 text-center", children: ["critical", "high", "normal"].map((s) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { className: `rounded-lg border py-2 ${T.box}`, children: [
+              /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
+                "p",
+                {
+                  className: "text-xl font-bold leading-tight",
+                  style: { color: SEV[s].color },
+                  children: counts[s]
+                }
+              ),
+              /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { className: T.label, children: SEV[s].label })
+            ] }, s)) }),
+            /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { className: `text-xs ${T.soft}`, children: "S\xE9lectionnez un point sur le globe ou un \xE9v\xE9nement pour voir le d\xE9tail." })
           ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
-            "button",
-            {
-              onClick: () => setSelected(null),
-              "aria-label": "Fermer",
-              className: "text-gray-400 hover:text-gray-700 dark:hover:text-gray-100 px-1",
-              children: "\u2715"
-            }
-          )
-        ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { className: "flex items-center gap-2", children: [
-          /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
-            "span",
-            {
-              className: `px-1.5 py-0.5 text-[10px] font-semibold uppercase rounded border ${SEV[current.severity].badge}`,
-              children: SEV[current.severity].label
-            }
-          ),
-          /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { className: `text-xs font-medium ${DECISION_STYLE[dec]}`, children: dec })
-        ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { className: "text-sm text-gray-600 dark:text-gray-300", children: current.desc }),
-        /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: "grid grid-cols-3 gap-2 text-center", children: [
-          ["D\xE9lai", current.eta],
-          ["Actifs", `${current.assets}\xD7`],
-          ["\xC9tapes", `${current.steps}\xD7`]
-        ].map(([k, val]) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { className: `${BOX} py-2`, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { className: "text-lg font-bold leading-tight", children: val }),
-          /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { className: LABEL, children: k })
-        ] }, k)) }),
-        /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { className: `${BOX} p-2.5 space-y-1.5`, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { className: LABEL, children: "Besoins" }),
-          needsFor(current).map((n) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", { className: "text-sm flex items-start gap-2", children: [
-            /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { className: "text-emerald-500", children: "\u2713" }),
-            /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", { children: [
-              n.qty,
-              "\xD7 ",
-              n.label,
-              " ",
-              /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", { className: SOFT, children: [
-                "\u2014 ",
-                n.hub
-              ] })
-            ] })
-          ] }, n.label))
-        ] }),
-        current.severity !== "normal" && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: "text-xs px-3 py-2 rounded-lg border border-amber-500/40 bg-amber-500/10 text-amber-700 dark:text-amber-300", children: "\u26A0 Ressources limit\xE9es dans la zone \u2014 validation requise." }),
-        /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { className: "grid grid-cols-2 gap-2", children: [
-          /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
-            "button",
-            {
-              onClick: () => decide(current, "Approuv\xE9"),
-              className: `${BTN_PRIMARY} py-2 text-sm`,
-              children: "Approuver"
-            }
-          ),
-          /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
-            "button",
-            {
-              onClick: () => decide(current, "Rejet\xE9"),
-              className: `${BTN_DANGER} py-2 text-sm`,
-              children: "Rejeter"
-            }
-          )
-        ] })
-      ] }) : /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { className: "p-3 space-y-3 border-b border-gray-200 dark:border-primary/20", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { className: LABEL, children: "Vue d'ensemble" }),
-        /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: "grid grid-cols-3 gap-2 text-center", children: ["critical", "high", "normal"].map((s) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { className: `${BOX} py-2`, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
-            "p",
-            {
-              className: "text-xl font-bold leading-tight",
-              style: { color: SEV[s].color },
-              children: counts[s]
-            }
-          ),
-          /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { className: LABEL, children: SEV[s].label })
-        ] }, s)) }),
-        /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { className: `text-xs ${SOFT}`, children: "S\xE9lectionnez un point sur le globe ou un \xE9v\xE9nement pour voir le d\xE9tail." })
-      ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { className: "flex-1 min-h-0 flex flex-col", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { className: `${LABEL} px-3 pt-2.5 pb-1`, children: "Journal d'activit\xE9" }),
-        /* @__PURE__ */ (0, import_jsx_runtime.jsx)("ul", { className: "flex-1 min-h-0 overflow-y-auto px-3 pb-3 space-y-1.5", children: feed.map((f, idx) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("li", { className: "flex gap-2 text-xs", children: [
-          /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { className: `font-mono shrink-0 ${SOFT}`, children: f.t }),
-          /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { className: FEED_TONE[f.tone], children: f.msg })
-        ] }, `${f.t}-${idx}`)) })
-      ] })
-    ] });
+          /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { className: "flex-1 min-h-0 flex flex-col", children: [
+            /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { className: `${T.label} px-3 pt-2.5 pb-1`, children: "Journal d'activit\xE9" }),
+            /* @__PURE__ */ (0, import_jsx_runtime.jsx)("ul", { className: "flex-1 min-h-0 overflow-y-auto px-3 pb-3 space-y-1.5", children: feed.map((f, idx) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("li", { className: "flex gap-2 text-xs", children: [
+              /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { className: `font-mono shrink-0 ${T.soft}`, children: f.t }),
+              /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { className: T.feed[f.tone], children: f.msg })
+            ] }, `${f.t}-${idx}`)) })
+          ] })
+        ]
+      }
+    );
   };
-  return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: "w-full text-gray-900 dark:text-gray-100", children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { className: "rounded-2xl overflow-hidden border border-gray-200 dark:border-primary/30 bg-white dark:bg-darkbg", children: [
-    /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { className: "flex flex-wrap items-center justify-between gap-3 px-4 py-2 border-b border-gray-200 dark:border-primary/30", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { className: "flex items-center gap-2", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { className: "w-2.5 h-2.5 rounded-full bg-primary" }),
-        /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { className: "font-bold tracking-tight", children: "Centre de supervision" })
-      ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime.jsx)("nav", { className: "flex items-center gap-1 overflow-x-auto", children: TABS.map((t) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
-        "button",
-        {
-          onClick: () => setTab(t),
-          className: `px-3 py-1.5 text-xs font-semibold uppercase tracking-wider border-b-2 transition-colors ${tab === t ? "text-primary border-primary" : "text-gray-500 dark:text-gray-400 border-transparent hover:text-gray-800 dark:hover:text-gray-200"}`,
-          children: t
-        },
-        t
-      )) }),
-      /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { className: "flex items-center gap-3 text-xs", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", { className: "flex items-center gap-1.5 text-emerald-600 dark:text-emerald-400 font-semibold uppercase tracking-wider", children: [
-          /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { className: "w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" }),
-          "Op\xE9rationnel"
-        ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", { className: "font-mono", children: [
-          utc(clock),
-          " UTC"
-        ] })
-      ] })
-    ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { className: "relative h-[56vh] lg:h-[68vh] min-h-[440px] bg-gradient-to-b from-gray-50 to-gray-100 dark:from-[#050a16] dark:to-darkbg", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
-        GlobeCanvas,
-        {
-          nodes,
-          selectedId: selected,
-          onSelect: setSelected,
-          layers,
-          auto,
-          dark
-        }
-      ),
-      renderLeft(
-        "hidden lg:flex absolute left-3 top-3 bottom-3 w-[290px]"
-      ),
-      renderRight(
-        "hidden lg:flex absolute right-3 top-3 bottom-3 w-[310px]"
-      )
-    ] }),
+  return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { ref: rootRef, className: `w-full ${T.text}`, children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { className: `rounded-2xl overflow-hidden border ${T.card}`, children: [
+    /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(
+      "div",
+      {
+        className: `flex flex-wrap items-center justify-between gap-3 px-4 py-2 border-b ${T.divider}`,
+        children: [
+          /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { className: "flex items-center gap-2", children: [
+            /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { className: `w-2.5 h-2.5 rounded-full ${T.accentBg}` }),
+            /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { className: "font-bold tracking-tight", children: "Centre de supervision" })
+          ] }),
+          /* @__PURE__ */ (0, import_jsx_runtime.jsx)("nav", { className: "flex items-center gap-1 overflow-x-auto", children: TABS.map((t) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
+            "button",
+            {
+              onClick: () => setTab(t),
+              className: `px-3 py-1.5 text-xs font-semibold uppercase tracking-wider border-b-2 transition-colors ${tab === t ? T.tabOn : T.tabOff}`,
+              children: t
+            },
+            t
+          )) }),
+          /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { className: "flex items-center gap-3 text-xs", children: [
+            /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(
+              "span",
+              {
+                className: `flex items-center gap-1.5 font-semibold uppercase tracking-wider ${T.okText}`,
+                children: [
+                  /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { className: "w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" }),
+                  "Op\xE9rationnel"
+                ]
+              }
+            ),
+            /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", { className: "font-mono", children: [
+              utc(clock),
+              " UTC"
+            ] })
+          ] })
+        ]
+      }
+    ),
+    /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(
+      "div",
+      {
+        className: `relative h-[56vh] lg:h-[68vh] min-h-[440px] bg-gradient-to-b ${T.stage}`,
+        children: [
+          /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
+            GlobeCanvas,
+            {
+              nodes,
+              selectedId: selected,
+              onSelect: setSelected,
+              layers,
+              auto,
+              dark
+            }
+          ),
+          renderLeft(
+            "hidden lg:flex absolute left-3 top-3 bottom-3 w-[290px]"
+          ),
+          renderRight(
+            "hidden lg:flex absolute right-3 top-3 bottom-3 w-[310px]"
+          )
+        ]
+      }
+    ),
     /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { className: "lg:hidden p-3 space-y-3", children: [
       renderLeft("flex max-h-[60vh]"),
       renderRight("flex max-h-[70vh]")
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { className: "border-t border-gray-200 dark:border-primary/30 p-3", children: [
+    /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { className: `border-t p-3 ${T.divider}`, children: [
       /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { className: "flex items-center justify-between mb-2", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { className: LABEL, children: "Chronologie (heures)" }),
-        /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", { className: "font-mono text-[11px] px-2 py-0.5 rounded bg-primary text-white", children: [
-          "MAINTENANT \xB7 +",
-          now.toFixed(1),
-          " h"
-        ] })
+        /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { className: T.label, children: "Chronologie (heures)" }),
+        /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(
+          "span",
+          {
+            className: `font-mono text-[11px] px-2 py-0.5 rounded font-semibold ${T.chip}`,
+            children: [
+              "MAINTENANT \xB7 +",
+              now.toFixed(1),
+              " h"
+            ]
+          }
+        )
       ] }),
       /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { className: "flex max-h-44 overflow-y-auto", children: [
         /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { className: "w-40 shrink-0 pr-2", children: [
@@ -1139,7 +1303,7 @@ var Globe = () => {
             "button",
             {
               onClick: () => setSelected(i.id === selected ? null : i.id),
-              className: `block w-full h-5 mb-1 text-left text-xs truncate ${i.id === selected ? "text-primary font-semibold" : SOFT}`,
+              className: `block w-full h-5 mb-1 text-left text-xs truncate ${i.id === selected ? `${T.text} font-semibold` : T.soft}`,
               title: i.title,
               children: i.place
             },
@@ -1162,7 +1326,7 @@ var Globe = () => {
               /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: "relative h-5", children: Array.from({ length: 13 }, (_, k) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
                 "span",
                 {
-                  className: `absolute top-0 -translate-x-1/2 text-[10px] ${SOFT}`,
+                  className: `absolute top-0 -translate-x-1/2 text-[10px] ${T.soft}`,
                   style: { left: `${k / 12 * 100}%` },
                   children: k
                 },
@@ -1171,13 +1335,13 @@ var Globe = () => {
               visible.map((i) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
                 "div",
                 {
-                  className: "relative h-5 mb-1 rounded bg-gray-100 dark:bg-white/5",
+                  className: `relative h-5 mb-1 rounded ${T.track}`,
                   children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
                     "div",
                     {
                       onPointerDown: (e) => e.stopPropagation(),
                       onClick: () => setSelected(i.id === selected ? null : i.id),
-                      className: `absolute top-0 h-full rounded cursor-pointer transition-opacity ${SEV[i.severity].bar} ${activeAt(i) ? "opacity-100" : "opacity-50"} ${i.id === selected ? "ring-2 ring-primary" : ""}`,
+                      className: `absolute top-0 h-full rounded cursor-pointer transition-opacity ${T.bar[i.severity]} ${activeAt(i) ? "opacity-100" : "opacity-50"} ${i.id === selected ? `ring-2 ${T.ring}` : ""}`,
                       style: {
                         left: `${i.start / 12 * 100}%`,
                         width: `${i.dur / 12 * 100}%`
@@ -1191,7 +1355,7 @@ var Globe = () => {
               /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
                 "div",
                 {
-                  className: "absolute top-0 bottom-0 w-px bg-primary pointer-events-none",
+                  className: `absolute top-0 bottom-0 w-0.5 pointer-events-none ${T.now}`,
                   style: { left: `${now / 12 * 100}%` }
                 }
               )

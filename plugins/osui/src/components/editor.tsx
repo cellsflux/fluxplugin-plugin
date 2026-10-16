@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useRef, useState } from "react";
 
 /* =====================================================================
  *  Centre de supervision : globe 3D (canvas, sans dépendance) + HUD
- *  Thème : classes Tailwind `dark:` (votre thème existant), couleurs `primary` / `darkbg`.
+ *  Thème : détecté automatiquement depuis l'arrière-plan de votre application (clair / sombre).
  *  Les données ci-dessous sont des exemples à remplacer par vos vraies données.
  * ===================================================================== */
 
@@ -10,6 +10,7 @@ import React, { useEffect, useMemo, useRef, useState } from "react";
 type Severity = "critical" | "high" | "normal";
 type Domain = "Surveillance" | "Opérations" | "Logistique";
 type Decision = "En attente" | "Approuvé" | "Rejeté";
+type FeedTone = "warn" | "ok" | "bad" | "info";
 
 type Incident = {
   id: string;
@@ -180,30 +181,10 @@ const LINKS: [string, string][] = [
   ["dubai", "kinshasa"],
 ];
 
-const SEV: Record<
-  Severity,
-  { label: string; badge: string; bar: string; color: string }
-> = {
-  critical: {
-    label: "Critique",
-    badge: "bg-red-500/15 text-red-600 dark:text-red-400 border-red-500/40",
-    bar: "bg-red-500/70",
-    color: "#ef4444",
-  },
-  high: {
-    label: "Élevé",
-    badge:
-      "bg-amber-500/15 text-amber-600 dark:text-amber-400 border-amber-500/40",
-    bar: "bg-amber-500/70",
-    color: "#f59e0b",
-  },
-  normal: {
-    label: "Normal",
-    badge:
-      "bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border-emerald-500/40",
-    bar: "bg-primary/60",
-    color: "#10b981",
-  },
+const SEV: Record<Severity, { label: string; color: string }> = {
+  critical: { label: "Critique", color: "#ef4444" },
+  high: { label: "Élevé", color: "#f59e0b" },
+  normal: { label: "Normal", color: "#10b981" },
 };
 
 const needsFor = (i: Incident) => [
@@ -224,35 +205,206 @@ const needsFor = (i: Incident) => [
   },
 ];
 
-/* ---------- Classes Tailwind ---------- */
-const PANEL =
-  "bg-white/90 dark:bg-darkbg/90 backdrop-blur-md border border-gray-200 dark:border-primary/30 rounded-xl shadow-lg";
-const BOX =
-  "rounded-lg border border-gray-200 dark:border-primary/20 bg-gray-50 dark:bg-white/5";
-const SOFT = "text-gray-500 dark:text-gray-400";
-const LABEL =
-  "text-[10px] uppercase tracking-wider text-gray-500 dark:text-gray-400";
-const BTN_PRIMARY =
-  "bg-primary text-white hover:bg-primary/90 rounded-lg font-medium transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 disabled:opacity-50";
-const BTN_GHOST =
-  "bg-white/80 dark:bg-white/10 text-gray-700 dark:text-gray-200 border border-gray-200 dark:border-primary/30 hover:bg-gray-100 dark:hover:bg-white/20 rounded-lg font-medium transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/50";
-const BTN_DANGER =
-  "bg-transparent text-red-600 dark:text-red-400 border border-red-500/50 hover:bg-red-500/10 rounded-lg font-medium transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500/40";
+/* ---------- Thème ----------
+ * Le mode (clair / sombre) est détecté depuis l'arrière-plan réel de votre application,
+ * donc il ne dépend ni de la config `darkMode` de Tailwind ni de classes personnalisées.
+ * Pour le forcer : <Globe theme="dark" /> ou <Globe theme="light" />.
+ * Les couleurs sont des classes Tailwind standard (toutes bien contrastées). */
+type Mode = "dark" | "light";
+type SevMap = Record<Severity, string>;
 
-/* ---------- Détection du thème (classe `dark` sur <html>) ---------- */
-function useIsDark() {
-  const get = () =>
-    typeof document !== "undefined" &&
-    document.documentElement.classList.contains("dark");
-  const [dark, setDark] = useState<boolean>(get);
+const THEME: Record<
+  Mode,
+  {
+    text: string;
+    soft: string;
+    label: string;
+    card: string;
+    panel: string;
+    box: string;
+    divider: string;
+    stage: string;
+    tabOn: string;
+    tabOff: string;
+    itemOn: string;
+    itemOff: string;
+    btnPrimary: string;
+    btnGhost: string;
+    btnDanger: string;
+    track: string;
+    warn: string;
+    switchOff: string;
+    accentBg: string;
+    chip: string;
+    ring: string;
+    now: string;
+    okText: string;
+    close: string;
+    badge: SevMap;
+    bar: SevMap;
+    feed: Record<FeedTone, string>;
+    decision: Record<Decision, string>;
+  }
+> = {
+  dark: {
+    text: "text-slate-100",
+    soft: "text-slate-400",
+    label: "text-[10px] uppercase tracking-wider text-slate-400",
+    card: "bg-slate-900 border-slate-700",
+    panel: "bg-slate-900/95 border-slate-600 shadow-xl backdrop-blur-md",
+    box: "bg-slate-800 border-slate-700",
+    divider: "border-slate-700",
+    stage: "from-slate-950 to-slate-900",
+    tabOn: "text-sky-300 border-sky-400",
+    tabOff: "text-slate-400 border-transparent hover:text-slate-100",
+    itemOn: "border-sky-400 bg-sky-400/10",
+    itemOff: "border-slate-700 hover:bg-slate-800",
+    btnPrimary: "bg-sky-500 text-slate-950 hover:bg-sky-400",
+    btnGhost:
+      "bg-slate-800 text-slate-100 border border-slate-600 hover:bg-slate-700",
+    btnDanger: "text-red-300 border border-red-400/60 hover:bg-red-500/15",
+    track: "bg-slate-800",
+    warn: "border-amber-400/50 bg-amber-400/10 text-amber-200",
+    switchOff: "bg-slate-600",
+    accentBg: "bg-sky-400",
+    chip: "bg-sky-500 text-slate-950",
+    ring: "ring-sky-400",
+    now: "bg-sky-400",
+    okText: "text-emerald-400",
+    close: "text-slate-400 hover:text-white",
+    badge: {
+      critical: "bg-red-500/20 text-red-300 border-red-400/50",
+      high: "bg-amber-500/20 text-amber-300 border-amber-400/50",
+      normal: "bg-emerald-500/20 text-emerald-300 border-emerald-400/50",
+    },
+    bar: { critical: "bg-red-500", high: "bg-amber-500", normal: "bg-sky-500" },
+    feed: {
+      warn: "text-amber-300",
+      ok: "text-emerald-300",
+      bad: "text-red-300",
+      info: "text-slate-200",
+    },
+    decision: {
+      "En attente": "text-slate-400",
+      Approuvé: "text-emerald-300",
+      Rejeté: "text-red-300",
+    },
+  },
+  light: {
+    text: "text-slate-900",
+    soft: "text-slate-600",
+    label: "text-[10px] uppercase tracking-wider text-slate-600",
+    card: "bg-white border-slate-300",
+    panel: "bg-white/95 border-slate-300 shadow-xl backdrop-blur-md",
+    box: "bg-slate-100 border-slate-200",
+    divider: "border-slate-200",
+    stage: "from-slate-100 to-slate-200",
+    tabOn: "text-indigo-700 border-indigo-600",
+    tabOff: "text-slate-600 border-transparent hover:text-slate-900",
+    itemOn: "border-indigo-600 bg-indigo-50",
+    itemOff: "border-slate-300 hover:bg-slate-100",
+    btnPrimary: "bg-indigo-600 text-white hover:bg-indigo-500",
+    btnGhost:
+      "bg-white text-slate-800 border border-slate-300 hover:bg-slate-100",
+    btnDanger: "text-red-700 border border-red-400 hover:bg-red-50",
+    track: "bg-slate-200",
+    warn: "border-amber-400 bg-amber-50 text-amber-800",
+    switchOff: "bg-slate-300",
+    accentBg: "bg-indigo-600",
+    chip: "bg-indigo-600 text-white",
+    ring: "ring-indigo-600",
+    now: "bg-indigo-600",
+    okText: "text-emerald-700",
+    close: "text-slate-500 hover:text-slate-900",
+    badge: {
+      critical: "bg-red-100 text-red-700 border-red-300",
+      high: "bg-amber-100 text-amber-800 border-amber-300",
+      normal: "bg-emerald-100 text-emerald-800 border-emerald-300",
+    },
+    bar: {
+      critical: "bg-red-500",
+      high: "bg-amber-500",
+      normal: "bg-indigo-500",
+    },
+    feed: {
+      warn: "text-amber-700",
+      ok: "text-emerald-700",
+      bad: "text-red-700",
+      info: "text-slate-800",
+    },
+    decision: {
+      "En attente": "text-slate-600",
+      Approuvé: "text-emerald-700",
+      Rejeté: "text-red-700",
+    },
+  },
+};
+
+const BTN_BASE =
+  "rounded-lg font-medium transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-400/60 disabled:opacity-50";
+
+/* ---------- Détection du thème de l'application hôte ---------- */
+const probe = (() => {
+  let ctx: CanvasRenderingContext2D | null = null;
+  return (color: string): [number, number, number, number] | null => {
+    if (!ctx)
+      ctx = document
+        .createElement("canvas")
+        .getContext("2d", { willReadFrequently: true });
+    if (!ctx) return null;
+    ctx.clearRect(0, 0, 1, 1);
+    ctx.fillStyle = "#000";
+    ctx.fillStyle = color; // le canvas normalise rgb(), oklch(), color(), etc.
+    ctx.fillRect(0, 0, 1, 1);
+    const d = ctx.getImageData(0, 0, 1, 1).data;
+    return [d[0], d[1], d[2], d[3] / 255];
+  };
+})();
+
+const detectDark = (start: Element | null): boolean => {
+  // 1. Premier arrière-plan opaque en remontant les parents (la couleur réellement visible)
+  let n: Element | null = start ?? document.body;
+  while (n) {
+    const px = probe(getComputedStyle(n).backgroundColor);
+    if (px && px[3] > 0.6) {
+      const lum = (0.2126 * px[0] + 0.7152 * px[1] + 0.0722 * px[2]) / 255;
+      return lum < 0.5;
+    }
+    n = n.parentElement;
+  }
+  // 2. Indices sur <html> (classe, data-theme, data-mode, color-scheme)
+  const root = document.documentElement;
+  const hint =
+    `${root.className} ${root.getAttribute("data-theme") ?? ""} ${root.getAttribute("data-mode") ?? ""}`.toLowerCase();
+  if (/\bdark\b/.test(hint)) return true;
+  if (/\blight\b/.test(hint)) return false;
+  const cs = getComputedStyle(root).colorScheme || "";
+  if (cs.includes("dark") && !cs.includes("light")) return true;
+  if (cs === "light") return false;
+  // 3. Réglage du système
+  return window.matchMedia("(prefers-color-scheme: dark)").matches;
+};
+
+function useHostDark(ref: React.RefObject<Element | null>) {
+  const [dark, setDark] = useState<boolean>(() =>
+    typeof document !== "undefined" ? detectDark(null) : false,
+  );
   useEffect(() => {
-    const obs = new MutationObserver(() => setDark(get()));
-    obs.observe(document.documentElement, {
-      attributes: true,
-      attributeFilter: ["class"],
-    });
-    return () => obs.disconnect();
-  }, []);
+    const update = () =>
+      setDark(detectDark(ref.current?.parentElement ?? null));
+    update();
+    const id = setInterval(update, 500);
+    const mo = new MutationObserver(update);
+    mo.observe(document.documentElement, { attributes: true });
+    mo.observe(document.body, { attributes: true });
+    const mq = window.matchMedia("(prefers-color-scheme: dark)");
+    mq.addEventListener("change", update);
+    return () => {
+      clearInterval(id);
+      mo.disconnect();
+      mq.removeEventListener("change", update);
+    };
+  }, [ref]);
   return dark;
 }
 
@@ -376,12 +528,12 @@ const PAL = {
   light: {
     sphereA: "#f8fafc",
     sphereB: "#c3d0e4",
-    rim: "rgba(37,99,235,0.8)",
-    glow: "37,99,235",
-    grid: "rgba(37,99,235,0.10)",
+    rim: "rgba(79,70,229,0.85)",
+    glow: "79,70,229",
+    grid: "rgba(79,70,229,0.12)",
     land: "51,65,85",
-    arc: "37,99,235",
-    pulse: "#1d4ed8",
+    arc: "79,70,229",
+    pulse: "#4338ca",
     text: "#1e293b",
     halo: "rgba(255,255,255,0.9)",
   },
@@ -429,6 +581,7 @@ const GlobeCanvas = ({
   const live = useRef({ nodes, selectedId, layers, auto, dark });
   live.current = { nodes, selectedId, layers, auto, dark };
 
+  const T = THEME[dark ? "dark" : "light"];
   const [readout, setReadout] = useState({ lon: 15, lat: 15, zoom: 1 });
 
   // Centrer la caméra sur l'élément sélectionné
@@ -820,23 +973,23 @@ const GlobeCanvas = ({
 
       {/* Barre de contrôle (centre bas) */}
       <div
-        className={`absolute bottom-3 left-1/2 -translate-x-1/2 flex items-center gap-2 px-2 py-1.5 ${PANEL}`}
+        className={`absolute bottom-3 left-1/2 -translate-x-1/2 flex items-center gap-2 px-2 py-1.5 border rounded-xl ${T.panel} ${T.text}`}
       >
         <button
           onClick={() => zoomBy(1 / 1.2)}
           aria-label="Zoom arrière"
-          className={`${BTN_GHOST} w-8 h-8`}
+          className={`${BTN_BASE} ${T.btnGhost} w-8 h-8`}
         >
           −
         </button>
-        <span className="font-mono text-[11px] text-gray-600 dark:text-gray-300 px-1 whitespace-nowrap">
+        <span className="font-mono text-[11px] px-1 whitespace-nowrap">
           LAT {readout.lat.toFixed(1)}° · LON {readout.lon.toFixed(1)}° ·{" "}
           {readout.zoom.toFixed(1)}×
         </span>
         <button
           onClick={() => zoomBy(1.2)}
           aria-label="Zoom avant"
-          className={`${BTN_GHOST} w-8 h-8`}
+          className={`${BTN_BASE} ${T.btnGhost} w-8 h-8`}
         >
           +
         </button>
@@ -844,7 +997,7 @@ const GlobeCanvas = ({
           onClick={resetView}
           aria-label="Réinitialiser la vue"
           title="Réinitialiser"
-          className={`${BTN_GHOST} w-8 h-8`}
+          className={`${BTN_BASE} ${T.btnGhost} w-8 h-8`}
         >
           ⟲
         </button>
@@ -858,21 +1011,7 @@ const GlobeCanvas = ({
  * ===================================================================== */
 const TABS = ["Tout", "Surveillance", "Opérations", "Logistique"] as const;
 type Tab = (typeof TABS)[number];
-type FeedTone = "warn" | "ok" | "bad" | "info";
 type FeedItem = { t: string; msg: string; tone: FeedTone };
-
-const FEED_TONE: Record<FeedTone, string> = {
-  warn: "text-amber-600 dark:text-amber-400",
-  ok: "text-emerald-600 dark:text-emerald-400",
-  bad: "text-red-600 dark:text-red-400",
-  info: "text-gray-700 dark:text-gray-200",
-};
-
-const DECISION_STYLE: Record<Decision, string> = {
-  "En attente": "text-gray-500 dark:text-gray-400",
-  Approuvé: "text-emerald-600 dark:text-emerald-400",
-  Rejeté: "text-red-600 dark:text-red-400",
-};
 
 const utc = (d: Date) => d.toISOString().slice(11, 19);
 
@@ -880,18 +1019,20 @@ const Switch = ({
   on,
   onChange,
   label,
+  T,
 }: {
   on: boolean;
   onChange: (v: boolean) => void;
   label: string;
+  T: (typeof THEME)[Mode];
 }) => (
   <button
     role="switch"
     aria-checked={on}
     aria-label={label}
     onClick={() => onChange(!on)}
-    className={`relative w-10 h-5 rounded-full transition-colors shrink-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 ${
-      on ? "bg-primary" : "bg-gray-300 dark:bg-white/20"
+    className={`relative w-10 h-5 rounded-full transition-colors shrink-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-400/60 ${
+      on ? T.accentBg : T.switchOff
     }`}
   >
     <span
@@ -900,8 +1041,15 @@ const Switch = ({
   </button>
 );
 
-export const Globe = () => {
-  const dark = useIsDark();
+export const Globe = ({
+  theme = "auto",
+}: {
+  theme?: "auto" | "dark" | "light";
+}) => {
+  const rootRef = useRef<HTMLDivElement>(null);
+  const hostDark = useHostDark(rootRef);
+  const dark = theme === "auto" ? hostDark : theme === "dark";
+  const T = THEME[dark ? "dark" : "light"];
 
   const [tab, setTab] = useState<Tab>("Tout");
   const [leftTab, setLeftTab] = useState<"situation" | "couches">("situation");
@@ -983,16 +1131,16 @@ export const Globe = () => {
 
   /* ---------- Panneau gauche ---------- */
   const renderLeft = (cls: string) => (
-    <aside className={`${cls} ${PANEL} flex-col overflow-hidden`}>
-      <div className="flex border-b border-gray-200 dark:border-primary/20">
+    <aside
+      className={`${cls} border rounded-xl ${T.panel} ${T.text} flex-col overflow-hidden`}
+    >
+      <div className={`flex border-b ${T.divider}`}>
         {(["situation", "couches"] as const).map((k) => (
           <button
             key={k}
             onClick={() => setLeftTab(k)}
             className={`flex-1 px-3 py-2.5 text-xs font-semibold uppercase tracking-wider border-b-2 transition-colors ${
-              leftTab === k
-                ? "text-primary border-primary"
-                : "text-gray-500 dark:text-gray-400 border-transparent hover:text-gray-800 dark:hover:text-gray-200"
+              leftTab === k ? T.tabOn : T.tabOff
             }`}
           >
             {k === "situation" ? "Situation" : "Couches"}
@@ -1002,7 +1150,7 @@ export const Globe = () => {
 
       {leftTab === "situation" ? (
         <div className="flex-1 min-h-0 overflow-y-auto p-2.5 space-y-2">
-          <p className={LABEL}>{visible.length} événements</p>
+          <p className={T.label}>{visible.length} événements</p>
           {visible.map((i) => {
             const on = i.id === selected;
             const dec = decisions[i.id] ?? "En attente";
@@ -1010,32 +1158,30 @@ export const Globe = () => {
               <button
                 key={i.id}
                 onClick={() => setSelected(on ? null : i.id)}
-                className={`w-full text-left p-2.5 rounded-lg border transition-colors ${
-                  on
-                    ? "border-primary bg-primary/10"
-                    : "border-gray-200 dark:border-primary/20 hover:bg-gray-100 dark:hover:bg-white/5"
-                }`}
+                className={`w-full text-left p-2.5 rounded-lg border transition-colors ${on ? T.itemOn : T.itemOff}`}
               >
                 <div className="flex items-start justify-between gap-2">
                   <p className="text-sm font-semibold leading-snug">
                     {i.title}
                   </p>
                   <span
-                    className={`shrink-0 px-1.5 py-0.5 text-[10px] font-semibold uppercase rounded border ${SEV[i.severity].badge}`}
+                    className={`shrink-0 px-1.5 py-0.5 text-[10px] font-semibold uppercase rounded border ${T.badge[i.severity]}`}
                   >
                     {SEV[i.severity].label}
                   </span>
                 </div>
                 <div
-                  className={`mt-1 flex items-center justify-between text-xs ${SOFT}`}
+                  className={`mt-1 flex items-center justify-between text-xs ${T.soft}`}
                 >
                   <span className="flex items-center gap-1.5">
                     {activeAt(i) && (
-                      <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
+                      <span
+                        className={`w-1.5 h-1.5 rounded-full animate-pulse ${T.accentBg}`}
+                      />
                     )}
                     {i.place} · {i.domain}
                   </span>
-                  <span className={DECISION_STYLE[dec]}>{dec}</span>
+                  <span className={T.decision[dec]}>{dec}</span>
                 </div>
               </button>
             );
@@ -1054,6 +1200,7 @@ export const Globe = () => {
             <div key={k} className="flex items-center justify-between">
               <span className="text-sm">{label}</span>
               <Switch
+                T={T}
                 on={layers[k]}
                 onChange={(v) => setLayers((l) => ({ ...l, [k]: v }))}
                 label={label}
@@ -1062,7 +1209,12 @@ export const Globe = () => {
           ))}
           <div className="flex items-center justify-between">
             <span className="text-sm">Rotation automatique</span>
-            <Switch on={auto} onChange={setAuto} label="Rotation automatique" />
+            <Switch
+              T={T}
+              on={auto}
+              onChange={setAuto}
+              label="Rotation automatique"
+            />
           </div>
         </div>
       )}
@@ -1075,20 +1227,24 @@ export const Globe = () => {
       ? (decisions[current.id] ?? "En attente")
       : "En attente";
     return (
-      <aside className={`${cls} ${PANEL} flex-col overflow-hidden`}>
+      <aside
+        className={`${cls} border rounded-xl ${T.panel} ${T.text} flex-col overflow-hidden`}
+      >
         {current ? (
-          <div className="overflow-y-auto max-h-[62%] p-3 space-y-3 border-b border-gray-200 dark:border-primary/20">
+          <div
+            className={`overflow-y-auto max-h-[62%] p-3 space-y-3 border-b ${T.divider}`}
+          >
             <div className="flex items-start justify-between gap-2">
               <div>
                 <p className="font-bold leading-snug">{current.title}</p>
-                <p className={`text-xs mt-0.5 ${SOFT}`}>
+                <p className={`text-xs mt-0.5 ${T.soft}`}>
                   Créé {current.ago} · {current.owner}
                 </p>
               </div>
               <button
                 onClick={() => setSelected(null)}
                 aria-label="Fermer"
-                className="text-gray-400 hover:text-gray-700 dark:hover:text-gray-100 px-1"
+                className={`${T.close} px-1`}
               >
                 ✕
               </button>
@@ -1096,18 +1252,16 @@ export const Globe = () => {
 
             <div className="flex items-center gap-2">
               <span
-                className={`px-1.5 py-0.5 text-[10px] font-semibold uppercase rounded border ${SEV[current.severity].badge}`}
+                className={`px-1.5 py-0.5 text-[10px] font-semibold uppercase rounded border ${T.badge[current.severity]}`}
               >
                 {SEV[current.severity].label}
               </span>
-              <span className={`text-xs font-medium ${DECISION_STYLE[dec]}`}>
+              <span className={`text-xs font-medium ${T.decision[dec]}`}>
                 {dec}
               </span>
             </div>
 
-            <p className="text-sm text-gray-600 dark:text-gray-300">
-              {current.desc}
-            </p>
+            <p className="text-sm">{current.desc}</p>
 
             <div className="grid grid-cols-3 gap-2 text-center">
               {[
@@ -1115,27 +1269,27 @@ export const Globe = () => {
                 ["Actifs", `${current.assets}×`],
                 ["Étapes", `${current.steps}×`],
               ].map(([k, val]) => (
-                <div key={k} className={`${BOX} py-2`}>
+                <div key={k} className={`rounded-lg border py-2 ${T.box}`}>
                   <p className="text-lg font-bold leading-tight">{val}</p>
-                  <p className={LABEL}>{k}</p>
+                  <p className={T.label}>{k}</p>
                 </div>
               ))}
             </div>
 
-            <div className={`${BOX} p-2.5 space-y-1.5`}>
-              <p className={LABEL}>Besoins</p>
+            <div className={`rounded-lg border p-2.5 space-y-1.5 ${T.box}`}>
+              <p className={T.label}>Besoins</p>
               {needsFor(current).map((n) => (
                 <p key={n.label} className="text-sm flex items-start gap-2">
-                  <span className="text-emerald-500">✓</span>
+                  <span className={T.okText}>✓</span>
                   <span>
-                    {n.qty}× {n.label} <span className={SOFT}>— {n.hub}</span>
+                    {n.qty}× {n.label} <span className={T.soft}>— {n.hub}</span>
                   </span>
                 </p>
               ))}
             </div>
 
             {current.severity !== "normal" && (
-              <div className="text-xs px-3 py-2 rounded-lg border border-amber-500/40 bg-amber-500/10 text-amber-700 dark:text-amber-300">
+              <div className={`text-xs px-3 py-2 rounded-lg border ${T.warn}`}>
                 ⚠ Ressources limitées dans la zone — validation requise.
               </div>
             )}
@@ -1143,35 +1297,35 @@ export const Globe = () => {
             <div className="grid grid-cols-2 gap-2">
               <button
                 onClick={() => decide(current, "Approuvé")}
-                className={`${BTN_PRIMARY} py-2 text-sm`}
+                className={`${BTN_BASE} ${T.btnPrimary} py-2 text-sm`}
               >
                 Approuver
               </button>
               <button
                 onClick={() => decide(current, "Rejeté")}
-                className={`${BTN_DANGER} py-2 text-sm`}
+                className={`${BTN_BASE} ${T.btnDanger} py-2 text-sm`}
               >
                 Rejeter
               </button>
             </div>
           </div>
         ) : (
-          <div className="p-3 space-y-3 border-b border-gray-200 dark:border-primary/20">
-            <p className={LABEL}>Vue d'ensemble</p>
+          <div className={`p-3 space-y-3 border-b ${T.divider}`}>
+            <p className={T.label}>Vue d'ensemble</p>
             <div className="grid grid-cols-3 gap-2 text-center">
               {(["critical", "high", "normal"] as const).map((s) => (
-                <div key={s} className={`${BOX} py-2`}>
+                <div key={s} className={`rounded-lg border py-2 ${T.box}`}>
                   <p
                     className="text-xl font-bold leading-tight"
                     style={{ color: SEV[s].color }}
                   >
                     {counts[s]}
                   </p>
-                  <p className={LABEL}>{SEV[s].label}</p>
+                  <p className={T.label}>{SEV[s].label}</p>
                 </div>
               ))}
             </div>
-            <p className={`text-xs ${SOFT}`}>
+            <p className={`text-xs ${T.soft}`}>
               Sélectionnez un point sur le globe ou un événement pour voir le
               détail.
             </p>
@@ -1179,12 +1333,12 @@ export const Globe = () => {
         )}
 
         <div className="flex-1 min-h-0 flex flex-col">
-          <p className={`${LABEL} px-3 pt-2.5 pb-1`}>Journal d'activité</p>
+          <p className={`${T.label} px-3 pt-2.5 pb-1`}>Journal d'activité</p>
           <ul className="flex-1 min-h-0 overflow-y-auto px-3 pb-3 space-y-1.5">
             {feed.map((f, idx) => (
               <li key={`${f.t}-${idx}`} className="flex gap-2 text-xs">
-                <span className={`font-mono shrink-0 ${SOFT}`}>{f.t}</span>
-                <span className={FEED_TONE[f.tone]}>{f.msg}</span>
+                <span className={`font-mono shrink-0 ${T.soft}`}>{f.t}</span>
+                <span className={T.feed[f.tone]}>{f.msg}</span>
               </li>
             ))}
           </ul>
@@ -1194,12 +1348,14 @@ export const Globe = () => {
   };
 
   return (
-    <div className="w-full text-gray-900 dark:text-gray-100">
-      <div className="rounded-2xl overflow-hidden border border-gray-200 dark:border-primary/30 bg-white dark:bg-darkbg">
+    <div ref={rootRef} className={`w-full ${T.text}`}>
+      <div className={`rounded-2xl overflow-hidden border ${T.card}`}>
         {/* ---------- Barre supérieure ---------- */}
-        <div className="flex flex-wrap items-center justify-between gap-3 px-4 py-2 border-b border-gray-200 dark:border-primary/30">
+        <div
+          className={`flex flex-wrap items-center justify-between gap-3 px-4 py-2 border-b ${T.divider}`}
+        >
           <div className="flex items-center gap-2">
-            <span className="w-2.5 h-2.5 rounded-full bg-primary" />
+            <span className={`w-2.5 h-2.5 rounded-full ${T.accentBg}`} />
             <span className="font-bold tracking-tight">
               Centre de supervision
             </span>
@@ -1211,9 +1367,7 @@ export const Globe = () => {
                 key={t}
                 onClick={() => setTab(t)}
                 className={`px-3 py-1.5 text-xs font-semibold uppercase tracking-wider border-b-2 transition-colors ${
-                  tab === t
-                    ? "text-primary border-primary"
-                    : "text-gray-500 dark:text-gray-400 border-transparent hover:text-gray-800 dark:hover:text-gray-200"
+                  tab === t ? T.tabOn : T.tabOff
                 }`}
               >
                 {t}
@@ -1222,7 +1376,9 @@ export const Globe = () => {
           </nav>
 
           <div className="flex items-center gap-3 text-xs">
-            <span className="flex items-center gap-1.5 text-emerald-600 dark:text-emerald-400 font-semibold uppercase tracking-wider">
+            <span
+              className={`flex items-center gap-1.5 font-semibold uppercase tracking-wider ${T.okText}`}
+            >
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
               Opérationnel
             </span>
@@ -1231,7 +1387,9 @@ export const Globe = () => {
         </div>
 
         {/* ---------- Scène : globe plein cadre + panneaux flottants ---------- */}
-        <div className="relative h-[56vh] lg:h-[68vh] min-h-[440px] bg-gradient-to-b from-gray-50 to-gray-100 dark:from-[#050a16] dark:to-darkbg">
+        <div
+          className={`relative h-[56vh] lg:h-[68vh] min-h-[440px] bg-gradient-to-b ${T.stage}`}
+        >
           <GlobeCanvas
             nodes={nodes}
             selectedId={selected}
@@ -1255,10 +1413,12 @@ export const Globe = () => {
         </div>
 
         {/* ---------- Chronologie ---------- */}
-        <div className="border-t border-gray-200 dark:border-primary/30 p-3">
+        <div className={`border-t p-3 ${T.divider}`}>
           <div className="flex items-center justify-between mb-2">
-            <p className={LABEL}>Chronologie (heures)</p>
-            <span className="font-mono text-[11px] px-2 py-0.5 rounded bg-primary text-white">
+            <p className={T.label}>Chronologie (heures)</p>
+            <span
+              className={`font-mono text-[11px] px-2 py-0.5 rounded font-semibold ${T.chip}`}
+            >
               MAINTENANT · +{now.toFixed(1)} h
             </span>
           </div>
@@ -1272,7 +1432,7 @@ export const Globe = () => {
                   key={i.id}
                   onClick={() => setSelected(i.id === selected ? null : i.id)}
                   className={`block w-full h-5 mb-1 text-left text-xs truncate ${
-                    i.id === selected ? "text-primary font-semibold" : SOFT
+                    i.id === selected ? `${T.text} font-semibold` : T.soft
                   }`}
                   title={i.title}
                 >
@@ -1297,7 +1457,7 @@ export const Globe = () => {
                 {Array.from({ length: 13 }, (_, k) => (
                   <span
                     key={k}
-                    className={`absolute top-0 -translate-x-1/2 text-[10px] ${SOFT}`}
+                    className={`absolute top-0 -translate-x-1/2 text-[10px] ${T.soft}`}
                     style={{ left: `${(k / 12) * 100}%` }}
                   >
                     {k}
@@ -1308,14 +1468,14 @@ export const Globe = () => {
               {visible.map((i) => (
                 <div
                   key={i.id}
-                  className="relative h-5 mb-1 rounded bg-gray-100 dark:bg-white/5"
+                  className={`relative h-5 mb-1 rounded ${T.track}`}
                 >
                   <div
                     onPointerDown={(e) => e.stopPropagation()}
                     onClick={() => setSelected(i.id === selected ? null : i.id)}
-                    className={`absolute top-0 h-full rounded cursor-pointer transition-opacity ${SEV[i.severity].bar} ${
+                    className={`absolute top-0 h-full rounded cursor-pointer transition-opacity ${T.bar[i.severity]} ${
                       activeAt(i) ? "opacity-100" : "opacity-50"
-                    } ${i.id === selected ? "ring-2 ring-primary" : ""}`}
+                    } ${i.id === selected ? `ring-2 ${T.ring}` : ""}`}
                     style={{
                       left: `${(i.start / 12) * 100}%`,
                       width: `${(i.dur / 12) * 100}%`,
@@ -1327,7 +1487,7 @@ export const Globe = () => {
 
               {/* Curseur « maintenant » */}
               <div
-                className="absolute top-0 bottom-0 w-px bg-primary pointer-events-none"
+                className={`absolute top-0 bottom-0 w-0.5 pointer-events-none ${T.now}`}
                 style={{ left: `${(now / 12) * 100}%` }}
               />
             </div>
