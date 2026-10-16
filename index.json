@@ -296,6 +296,7 @@
       "folder": "plugins/osui/",
       "files": [
         "README.md",
+        "assets/1.png",
         "assets/icon.svg",
         "dist/index.css",
         "dist/main.mjs",
@@ -306,17 +307,20 @@
       ],
       "hashes": {
         "README.md": "3f51eec841ef2f7fde060e9e8ecbadab9ec6bdda2b820e4818b7589d57ea984b",
+        "assets/1.png": "9115ae13dbe7fd493ca898f67ef822c8be8ab101afb5f0b89a389878a24215b3",
         "assets/icon.svg": "5e1853a2aec00f3d69e8a72a06eb320bd30da0616813a04de92b0af4a5432f66",
         "dist/index.css": "65c952bfac71607dbb7bd138c4f6b88ec38a4399c1f3f0d14f9b02900da2606d",
         "dist/main.mjs": "f17d90498bcacad8a9f456027fe41ed47c4d929db9f2b3eb71c2b8027b5d83d8",
         "dist/renderer.css": "e829262c212fd58d5cd70629ba9b67060e6fc0d5d30ce69484a0f69df7217f66",
         "dist/renderer.js": "6a3919296573855adca2ef24cb318f67ffe9c591a70aa46c55769a8e81462bf6",
-        "dist/tailwind.css": "72d92c38d976f9ac187aafa9a039af82e85a3a824bb63c778cb403827b3b54e5",
-        "plugin.json": "14f5d1222aaad456c39c4cb707bcd84104cd3c3d650a4d8849f03b71c4687c3d"
+        "dist/tailwind.css": "5cfe9862d1d36780fce24a8f32d49f61077d9db83440aef2cd4bdc3836b45f6e",
+        "plugin.json": "1cca514ce3268ef4480761fd57d371a9222b4c11fcb80fdf2b3dea86f40cf579"
       },
       "license": "MIT",
       "icon": "plugins/osui/assets/icon.svg",
-      "screenshots": [],
+      "screenshots": [
+        "plugins/osui/assets/1.png"
+      ],
       "categories": [
         "Productivity"
       ],
